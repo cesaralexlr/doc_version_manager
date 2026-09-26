@@ -1,0 +1,83 @@
+/* Estilos generales para los documentos convertidos */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.6;
+    color: #2c3e50;
+    background-color: #f8f9fa;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 850px;
+    margin: 40px auto;
+    background: #ffffff;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+/* Tipografía y Encabezados */
+h1 {
+    font-size: 2.2em;
+    color: #1a252f;
+    border-bottom: 2px solid #eaeaea;
+    padding-bottom: 12px;
+    margin-top: 0;
+}
+
+h2 {
+    font-size: 1.5em;
+    color: #2980b9;
+    margin-top: 30px;
+    border-bottom: 1px solid #f1f1f1;
+    padding-bottom: 6px;
+}
+
+h3 {
+    font-size: 1.2em;
+    color: #34495e;
+}
+
+p {
+    margin-bottom: 16px;
+}
+
+/* Imágenes y elementos visuales */
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 20px auto;
+    border-radius: 6px;
+    border: 1px solid #e1e8ed;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+}
+
+/* Tablas de contenido (como el glosario de notas) */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+th, td {
+    border: 1px solid #dfe6e9;
+    padding: 12px;
+    text-align: left;
+}
+
+th {
+    background-color: #f1f2f6;
+    color: #2d3436;
+}
+
+/* Listas */
+ul, ol {
+    margin-bottom: 16px;
+    padding-left: 24px;
+}
+
+li {
+    margin-bottom: 6px;
+}

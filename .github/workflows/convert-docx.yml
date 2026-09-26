@@ -1,0 +1,46 @@
+name: Convertir Docx y Generar Historial
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+    - name: Copiar repositorio
+      uses: actions/checkout@v4
+
+    - name: Configurar entorno de Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+        cache: 'pip'
+
+    - name: Instalar dependencias del sistema (Pandoc)
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y pandoc
+
+    - name: Instalar dependencias de Python
+      run: |
+        pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Ejecutar script de procesamiento y resumen con Gemini
+      env:
+        GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      run: |
+        python scripts/generate_history.py
+
+    - name: Guardar cambios generados en el repositorio
+      run: |
+        git config --global user.name "github-actions[bot]"
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
+        git add output/
+        git diff --staged --quiet || git commit -m "chore: actualiza HTML e historial de versiones automático"
+        git push
