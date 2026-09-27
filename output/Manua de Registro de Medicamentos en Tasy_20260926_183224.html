@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc 3.11" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Manual de Registro de Medicamentos en TASY</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+  </style>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<header class="top-corporate-bar">
+    <div class="corporate-info">
+        <div class="doc-title-bar">Manual de Registro de Medicamentos en TASY</div>
+        <div class="doc-version-tag">Centro Médico ABC | Versión 1.0 | Última modificación: 26 de septiembre de 2026</div>
+    </div>
+</header>
+
+
+<nav id="TOC" role="doc-toc">
+<ul>
+<li class="toc-history-link"><a href="index.html" style="font-weight: bold; color: #e74c3c;">← Volver al Historial</a></li>
+<li><a href="#introducción" id="toc-introducción"><span
+class="toc-section-number">1</span> Introducción </a>
+<ul>
+<li><a href="#cómo-utilizar-este-manual"
+id="toc-cómo-utilizar-este-manual"><span
+class="toc-section-number">1.1</span> ¿Cómo utilizar este
+manual?</a></li>
+<li><a href="#arquitectura-y-lógica-del-sistema-tasy"
+id="toc-arquitectura-y-lógica-del-sistema-tasy"><span
+class="toc-section-number">1.2</span> Arquitectura y Lógica del Sistema
+Tasy</a>
+<ul>
+<li><a href="#funciones-y-utilitarios"
+id="toc-funciones-y-utilitarios"><span
+class="toc-section-number">1.2.1</span> Funciones y Utilitarios</a></li>
+<li><a href="#registro-de-materiales"
+id="toc-registro-de-materiales"><span
+class="toc-section-number">1.2.2</span> Registro de Materiales</a></li>
+</ul></li>
+<li><a href="#cpoe-y-generación-de-lotes-para-la-dispensación"
+id="toc-cpoe-y-generación-de-lotes-para-la-dispensación"><span
+class="toc-section-number">1.3</span> CPOE y generación de Lotes para la
+dispensación</a></li>
+</ul></li>
+<li><a href="#dosis-unitarias-enterales"
+id="toc-dosis-unitarias-enterales"><span
+class="toc-section-number">2</span> Dosis unitarias enterales</a></li>
+<li><a href="#multidosis-enterales" id="toc-multidosis-enterales"><span
+class="toc-section-number">3</span> Multidosis enterales</a></li>
+<li><a href="#medicamentos-intravenosos"
+id="toc-medicamentos-intravenosos"><span
+class="toc-section-number">4</span> Medicamentos intravenosos</a>
+<ul>
+<li><a href="#nutriciones" id="toc-nutriciones"><span
+class="toc-section-number">4.1</span> Nutriciones</a></li>
+<li><a href="#mezclas-intravenosas" id="toc-mezclas-intravenosas"><span
+class="toc-section-number">4.2</span> Mezclas intravenosas</a></li>
+<li><a href="#nutriciones-parenterales"
+id="toc-nutriciones-parenterales"><span
+class="toc-section-number">4.3</span> Nutriciones parenterales</a></li>
+<li><a href="#esquemas-de-insulinas"
+id="toc-esquemas-de-insulinas"><span
+class="toc-section-number">4.4</span> Esquemas de Insulinas</a></li>
+</ul></li>
+</ul>
+</nav>
+<h1 data-number="1" id="introducción"><span
+class="header-section-number">1</span> Introducción </h1>
+<p>El presente manual es una guía técnica para la configuración completa
+del catalogo de medicamentos para el Centro Médico ABC, sus flujos y
+reglas son propias de la institución, con Tasy EMR 5.03.</p>
+<h2 data-number="1.1" id="cómo-utilizar-este-manual"><span
+class="header-section-number">1.1</span> ¿Cómo utilizar este
+manual?</h2>
+<p>Con el objetivo de tener una lectura ágil se explicaciones breves y
+diagramas. A menudo se incluyen <a
+href="#cómo-utilizar-este-manual"><span
+data-custom-style="Hyperlink">hipervínculos</span></a> para evitar la
+repetición de pantallas, y crear una navegación referencial.</p>
+<div data-custom-style="Nota">
+<p><span data-custom-style="Subtle Emphasis">Nota: LA información como
+notas aparece en cursiva al final de un bloque para incluir flujos
+alternos o configuraciones adicionales, así como algunas excepciones a
+las reglas generales.</span></p>
+</div>
+<p><span data-custom-style="Subtle Emphasis">En el caso de necesitar
+nombrar algo importante:</span></p>
+<div data-custom-style="Importante">
+<blockquote>
+<p><span
+data-custom-style="Subtle Emphasis"></span>⚠️<strong>Importante</strong>:
+Si una modificación es capaz de entorpecer o detener un flujo se
+encierra dentro de la casilla de importante</p>
+</blockquote>
+</div>
+<p><span data-custom-style="Subtle Emphasis">En el caso de las
+políticas</span></p>
+<div data-custom-style="Politica">
+<blockquote>
+<p>Política: Las políticas del Centro Médico ABC tienen la importancia
+jerárquica más alta, la mejor práctica es siempre consultar la versión
+más reciente.</p>
+</blockquote>
+</div>
+<p>También tablas comparativas</p>
+<table data-custom-style="Tabladelista3-nfasis1">
+<colgroup>
+<col style="width: 18%" />
+<col style="width: 81%" />
+</colgroup>
+<thead>
+<tr>
+<th>Nombre</th>
+<th>Características</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Nota</td>
+<td>Amplia las instrucciones que se y da flujos internos</td>
+</tr>
+<tr>
+<td>Importante</td>
+<td>Alerta de modificaciones que pueden detener un flujo</td>
+</tr>
+<tr>
+<td>Política</td>
+<td>Maxima regla, esta manda sobre la configuración de Tasy</td>
+</tr>
+</tbody>
+</table>
+<h2 data-number="1.2" id="arquitectura-y-lógica-del-sistema-tasy"><span
+class="header-section-number">1.2</span> Arquitectura y Lógica del
+Sistema Tasy</h2>
+<p>De forma muy breve, el sistema Tasy EMR opera mediante un modelo de
+base de datos relacional jerárquica que vincula catálogos maestros de
+artículos con reglas de negocio predefinidas. Esto se traduce en que
+ningún valor puede ser creado si no se configura un dato maestro y
+después una regla.</p>
+<p>Ejemplo: para configurar una alerta, primero se registran los
+elementos en el catálogo. Al crear la vía "Intravenosa" y el medicamento
+"Potasio", el sistema les asigna automáticamente un número de
+identificación a cada uno (por ejemplo, ID 1 e ID 2). La regla de
+seguridad se programa uniendo exclusivamente esos números (ID 1 + ID 2 =
+Alerta). De este modo, si posteriormente se edita el texto de
+"Intravenosa" a "I.V.", la alerta sigue funcionando sin requerir
+ajustes, porque la base de datos continúa evaluando la conexión entre
+los códigos numéricos originales.</p>
+<p>La interfaz gráfica de Tasy nos permite capturar esta información y
+reglas por medio de formularios dinámicos, la visión y edición de los
+mismos a su vez están controlados por la información del
+“Establecimiento”, “Perfil” y Sector”.</p>
+<p><img src="media/image1.png" /></p>
+<h3 data-number="1.2.1" id="funciones-y-utilitarios"><span
+class="header-section-number">1.2.1</span> Funciones y Utilitarios</h3>
+<p>Para la creación de registros y reglas usaremos los formularios
+contenidos en “Funciones” y “Utilitarios”, aquí también vamos a
+previsualizar la funcionalidad para el usuario final.</p>
+<p><img src="media/image2.png" /></p>
+<h3 data-number="1.2.2" id="registro-de-materiales"><span
+class="header-section-number">1.2.2</span> Registro de Materiales</h3>
+<p>Los principales para creación/edición son “Registro de Materiales” y
+“Medicamentos”</p>
+<p><img src="media/image3.png" /></p>
+<p>Dentro de Registro de Materiales</p>
+<h2 data-number="1.3"
+id="cpoe-y-generación-de-lotes-para-la-dispensación"><span
+class="header-section-number">1.3</span> CPOE y generación de Lotes para
+la dispensación</h2>
+
+<h1 data-number="2" id="dosis-unitarias-enterales"><span
+class="header-section-number">2</span> Dosis unitarias enterales</h1>
+
+<h1 data-number="3" id="multidosis-enterales"><span
+class="header-section-number">3</span> Multidosis enterales</h1>
+
+<h1 data-number="4" id="medicamentos-intravenosos"><span
+class="header-section-number">4</span> Medicamentos intravenosos</h1>
+<h2 data-number="4.1" id="nutriciones"><span
+class="header-section-number">4.1</span> Nutriciones</h2>
+
+<h2 data-number="4.2" id="mezclas-intravenosas"><span
+class="header-section-number">4.2</span> Mezclas intravenosas</h2>
+
+<h2 data-number="4.3" id="nutriciones-parenterales"><span
+class="header-section-number">4.3</span> Nutriciones parenterales</h2>
+
+<h2 data-number="4.4" id="esquemas-de-insulinas"><span
+class="header-section-number">4.4</span> Esquemas de Insulinas</h2>
+</body>
+</html>

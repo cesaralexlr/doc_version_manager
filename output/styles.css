@@ -1,83 +1,352 @@
-/* Estilos generales para los documentos convertidos */
 body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    line-height: 1.6;
-    color: #2c3e50;
-    background-color: #f8f9fa;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
     margin: 0;
     padding: 0;
-}
-
-.container {
-    max-width: 850px;
-    margin: 40px auto;
+    padding-top: 62px;                  /* Espacio reservado para la barra fija */
     background: #ffffff;
-    padding: 40px;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    color: #1e293b;
+    line-height: 1.45;
+    box-sizing: border-box;
 }
 
-/* Tipografía y Encabezados */
-h1 {
-    font-size: 2.2em;
-    color: #1a252f;
-    border-bottom: 2px solid #eaeaea;
-    padding-bottom: 12px;
+/* =========================================================
+   BARRA SUPERIOR CORPORATIVA FIJA
+   ========================================================= */
+header.top-corporate-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 54px;
+    background: #0f172a;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    padding: 0 24px;
+    box-sizing: border-box;
+    z-index: 2000;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.12);
+}
+
+.corporate-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.doc-title-bar {
+    font-size: 0.95em;
+    font-weight: 700;
+    color: #f8fafc;
+    line-height: 1.2;
+}
+
+.doc-version-tag {
+    font-size: 0.75em;
+    font-weight: 400;
+    color: #94a3b8;
+    margin-top: 1px;
+}
+
+/* =========================================================
+   PANEL LATERAL FIJO DE NAVEGACIÓN (TOC)
+   ========================================================= */
+nav#TOC {
+    position: fixed;
+    top: 54px;
+    left: 0;
+    width: 19%;
+    height: calc(100vh - 54px);
+    background: #f8fafc;
+    border-right: 1px solid #e2e8f0;
+    padding: 16px 12px;
+    overflow-y: auto;
+    box-sizing: border-box;
+    font-size: 0.82em;
+    z-index: 1000;
+}
+
+nav#TOC ul {
+    list-style-type: none;
+    padding-left: 8px;
+    margin: 4px 0;
+}
+
+nav#TOC li {
+    margin-bottom: 4px;
+}
+
+nav#TOC a {
+    color: #334155;
+    text-decoration: none;
+}
+
+nav#TOC a:hover {
+    color: #2563eb;
+    text-decoration: underline;
+}
+
+nav#TOC .toc-history-link {
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+/* =========================================================
+   ÁREA DE CONTENIDO PRINCIPAL
+   (envuelto en <main class="content"> desde Python)
+   ========================================================= */
+main.content {
+    margin-left: 22%;
+    margin-right: 4%;
+    margin-top: 0;
+    max-width: 980px;
+    padding: 0 0 40px 0;
+    box-sizing: border-box;
+}
+
+/* =========================================================
+   PÁRRAFOS, LISTAS Y TIPOGRAFÍA BÁSICA
+   ========================================================= */
+p, ul, ol {
+    margin-top: 0;
+    margin-bottom: 6px;
+}
+
+/* =========================================================
+   ELIMINACIÓN DE ELEMENTOS VACÍOS RESIDUALES
+   ========================================================= */
+p:empty,
+p:has(> br:only-child),
+p:has(> *:only-child:empty) {
+    display: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    height: 0 !important;
+}
+
+span:empty {
+    display: none;
+}
+
+/* =========================================================
+   LISTAS ANIDADAS DEL CONTENIDO
+   ========================================================= */
+li > ul, li > ol {
+    margin-top: 4px;
+    margin-bottom: 4px;
+}
+
+/* =========================================================
+   NEGRITAS Y ÉNFASIS
+   ========================================================= */
+strong, b { font-weight: 700; color: #0f172a; }
+em, i     { font-style: italic; color: #334155; }
+
+/* =========================================================
+   ENLACES DEL CONTENIDO
+   ========================================================= */
+a { color: #2563eb; text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* =========================================================
+   ENCABEZADOS
+   ========================================================= */
+h1, h2, h3, h4 {
+    color: #0f172a;
+    scroll-margin-top: 65px;
+    margin-top: 14px;
+    margin-bottom: 4px;
+    font-weight: 700;
+    line-height: 1.25;
+}
+
+h1 { font-size: 1.4em; border-bottom: 1px solid #e2e8f0; padding-bottom: 2px; }
+h2 { font-size: 1.2em; }
+h3 { font-size: 1.02em; }
+h4 { font-size: 0.98em; }
+
+/* Encabezados consecutivos: menos aire entre ellos */
+h1 + h1, h2 + h2, h3 + h3, h4 + h4,
+h1 + h2, h2 + h3, h3 + h4,
+h1 + h3, h1 + h4, h2 + h4 {
+    margin-top: 6px;
+}
+
+/* Número de sección inyectado por Pandoc */
+.header-section-number {
+    margin-right: 0.4em;
+    color: #475569;
+}
+
+/* =========================================================
+   BLOQUES DE ALERTA PERSONALIZADOS
+   (Importante / Política / Nota)
+   ========================================================= */
+[data-custom-style="Importante"],
+[custom-style="Importante"],
+[data-custom-style="Politica"],
+[custom-style="Politica"],
+[data-custom-style="Política"],
+[custom-style="Política"],
+[data-custom-style="Nota"],
+[custom-style="Nota"] {
+    padding: 10px 14px;
+    margin: 10px auto;
+    max-width: 92%;
+    border-radius: 4px;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+/* Importante: rojo */
+[data-custom-style="Importante"],
+[custom-style="Importante"] {
+    background: #fef2f2;
+    border-left: 4px solid #dc2626;
+    color: #991b1b;
+}
+[data-custom-style="Importante"]::before,
+[custom-style="Importante"]::before {
+    content: "⚠️ Importante: ";
+    font-weight: bold;
+}
+
+/* Política: azul oscuro */
+[data-custom-style="Politica"],
+[custom-style="Politica"],
+[data-custom-style="Política"],
+[custom-style="Política"] {
+    background: #f8fafc;
+    border-left: 4px solid #0f172a;
+    color: #0f172a;
+}
+[data-custom-style="Politica"]::before,
+[custom-style="Politica"]::before,
+[data-custom-style="Política"]::before,
+[custom-style="Política"]::before {
+    content: "📖 Política: ";
+    font-weight: bold;
+}
+
+/* Nota: azul claro */
+[data-custom-style="Nota"],
+[custom-style="Nota"] {
+    background: #eff6ff;
+    border-left: 4px solid #2563eb;
+    color: #1e40af;
+}
+[data-custom-style="Nota"]::before,
+[custom-style="Nota"]::before {
+    content: "ℹ️ Nota: ";
+    font-weight: bold;
+}
+
+/* =========================================================
+   NEUTRALIZACIÓN DE MÁRGENES EN BLOQUES ANIDADOS
+   ========================================================= */
+blockquote {
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+blockquote p,
+[data-custom-style] p,
+[custom-style] p,
+li p {
+    margin-top: 0;
+    margin-bottom: 4px;
+}
+
+blockquote p:last-child,
+[data-custom-style] p:last-child,
+[custom-style] p:last-child,
+li p:last-child {
+    margin-bottom: 0;
+}
+
+[data-custom-style] > *:first-child,
+[custom-style] > *:first-child {
     margin-top: 0;
 }
 
-h2 {
-    font-size: 1.5em;
-    color: #2980b9;
-    margin-top: 30px;
-    border-bottom: 1px solid #f1f1f1;
-    padding-bottom: 6px;
+[data-custom-style] > *:last-child,
+[custom-style] > *:last-child {
+    margin-bottom: 0;
 }
 
-h3 {
-    font-size: 1.2em;
-    color: #34495e;
+/* =========================================================
+   IMÁGENES
+   ========================================================= */
+p:has(img) {
+    display: block !important;
+    height: auto !important;
+    margin: 10px 0 !important;
 }
 
-p {
-    margin-bottom: 16px;
-}
-
-/* Imágenes y elementos visuales */
 img {
-    max-width: 100%;
-    height: auto;
-    display: block;
-    margin: 20px auto;
-    border-radius: 6px;
-    border: 1px solid #e1e8ed;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+    max-width: 100% !important;
+    max-height: 80vh !important;
+    height: auto !important;
+    width: auto !important;
+    display: block !important;
+    margin: 8px auto;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    object-fit: contain;
 }
 
-/* Tablas de contenido (como el glosario de notas) */
+/* =========================================================
+   TABLAS CON ALTERNANCIA DE FILAS
+   ========================================================= */
 table {
     width: 100%;
     border-collapse: collapse;
-    margin: 20px 0;
+    margin: 10px 0;
+    font-size: 0.9em;
 }
 
 th, td {
-    border: 1px solid #dfe6e9;
-    padding: 12px;
+    border: 1px solid #cbd5e1;
+    padding: 6px 10px;
     text-align: left;
 }
 
 th {
-    background-color: #f1f2f6;
-    color: #2d3436;
+    background-color: #f1f5f9;
+    font-weight: 700;
 }
 
-/* Listas */
-ul, ol {
-    margin-bottom: 16px;
-    padding-left: 24px;
+tbody tr:nth-child(even) {
+    background-color: #f8fafc;
 }
 
-li {
-    margin-bottom: 6px;
+tbody tr:hover {
+    background-color: #f1f5f9;
+}
+
+/* =========================================================
+   ADAPTABILIDAD RESPONSIVA (MÓVILES Y TABLETS)
+   ========================================================= */
+@media (max-width: 768px) {
+    body {
+        padding-top: 54px;
+    }
+
+    nav#TOC {
+        position: relative;
+        top: 0;
+        width: 100%;
+        height: auto;
+        border-right: none;
+        border-bottom: 1px solid #e2e8f0;
+    }
+
+    main.content {
+        margin-left: 4%;
+        margin-right: 4%;
+        margin-top: 15px;
+        max-width: none;
+    }
 }
