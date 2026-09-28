@@ -1,0 +1,486 @@
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    margin: 0;
+    padding: 0;
+    padding-top: 62px;                  /* Espacio reservado para la barra fija */
+    padding-bottom: 50px;               /* Espacio al final del documento */
+    background: #ffffff;
+    color: #1e293b;
+    line-height: 1.45;
+    box-sizing: border-box;
+}
+
+/* =========================================================
+   BARRA SUPERIOR CORPORATIVA FIJA
+   ========================================================= */
+header.top-corporate-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 54px;
+    background: #0f172a;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    padding: 0 24px;
+    box-sizing: border-box;
+    z-index: 2000;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.12);
+}
+
+.corporate-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.doc-title-bar {
+    font-size: 0.95em;
+    font-weight: 700;
+    color: #f8fafc;
+    line-height: 1.2;
+}
+
+.doc-version-tag {
+    font-size: 0.75em;
+    font-weight: 400;
+    color: #94a3b8;
+    margin-top: 1px;
+}
+
+/* =========================================================
+   PANEL LATERAL FIJO DE NAVEGACIÓN (TOC)
+   ========================================================= */
+nav#TOC {
+    position: fixed;
+    top: 54px;
+    left: 0;
+    width: 19%;
+    height: calc(100vh - 54px);
+    background: #f8fafc;
+    border-right: 1px solid #e2e8f0;
+    padding: 16px 12px;
+    overflow-y: auto;
+    box-sizing: border-box;
+    font-size: 0.82em;
+    z-index: 1000;
+}
+
+nav#TOC ul {
+    list-style-type: none;
+    padding-left: 8px;
+    margin: 4px 0;
+}
+
+nav#TOC li {
+    margin-bottom: 4px;
+}
+
+nav#TOC a {
+    color: #334155;
+    text-decoration: none;
+}
+
+nav#TOC a:hover {
+    color: #2563eb;
+    text-decoration: underline;
+}
+
+/* Enlace "Volver al Historial" destacado */
+nav#TOC .toc-history-link {
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+/* =========================================================
+   ÁREA DE CONTENIDO PRINCIPAL
+   ========================================================= */
+body > *:not(nav#TOC):not(header.top-corporate-bar):not(script):not(style) {
+    margin-left: 22%;
+    margin-right: 4%;
+    margin-top: 0;                       /* Espacio aportado por padding-top en body */
+    max-width: 980px;
+    padding: 0 0 10px 0 ;
+    box-sizing: border-box;
+}
+
+/* =========================================================
+   PÁRRAFOS, LISTAS Y TIPOGRAFÍA BÁSICA
+   ========================================================= */
+p, ul, ol {
+    margin-top: 0;
+    margin-bottom: 6px;
+}
+
+/* Justificar SOLO párrafos de texto normal */
+p {
+    text-align: justify;
+    text-justify: inter-word;
+    hyphens: auto;
+    -webkit-hyphens: auto;
+    -ms-hyphens: auto;
+}
+
+/* Excluir tablas y listas del texto justificado */
+td p,
+th p,
+li p,
+li {
+    text-align: left;
+    hyphens: none;
+    -webkit-hyphens: none;
+    -ms-hyphens: none;
+}
+
+/* =========================================================
+   ELIMINACIÓN DE ELEMENTOS VACÍOS RESIDUALES
+   ========================================================= */
+p:empty,
+p:has(> br:only-child),
+p:not(:has(img)):has(> *:only-child:empty) {
+    display: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    height: 0 !important;
+}
+
+span:empty {
+    display: none;
+}
+
+/* =========================================================
+   LISTAS ANIDADAS DEL CONTENIDO
+   ========================================================= */
+li > ul, li > ol {
+    margin-top: 4px;
+    margin-bottom: 4px;
+}
+
+/* =========================================================
+   NEGRITAS Y ÉNFASIS
+   ========================================================= */
+strong, b { font-weight: 700; color: #0f172a; }
+em, i     { font-style: italic; color: #334155; }
+
+/* =========================================================
+   ENLACES DEL CONTENIDO
+   ========================================================= */
+a { color: #2563eb; text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* =========================================================
+   ENCABEZADOS
+   ========================================================= */
+h1, h2, h3, h4 {
+    color: #0f172a;
+    scroll-margin-top: 65px;
+    margin-top: 14px;
+    margin-bottom: 4px;
+    font-weight: 700;
+    line-height: 1.25;
+}
+
+h1 {
+    font-size: 1.4em;
+    color: #2563eb;          /* ← azul para h1 */
+    margin-top: 20px;        /* ← 20px solo antes del h1 */
+    border-bottom: 1px solid #e2e8f0;
+    padding-bottom: 2px;
+}
+h2 { font-size: 1.2em; }
+h3 { font-size: 1.02em; }
+h4 { font-size: 0.98em; }
+
+/* Encabezados consecutivos: menos aire entre ellos */
+h1 + h1, h2 + h2, h3 + h3, h4 + h4,
+h1 + h2, h2 + h3, h3 + h4,
+h1 + h3, h1 + h4, h2 + h4 {
+    margin-top: 6px;
+}
+
+/* Número de sección inyectado por Pandoc */
+.header-section-number {
+    margin-right: 0.4em;
+    color: #2563eb;
+}
+
+/* =========================================================
+   BLOQUES DE ALERTA PERSONALIZADOS (CENTRADOS Y CON ÍCONOS)
+   ========================================================= */
+[data-custom-style="Importante"],
+[custom-style="Importante"],
+[data-custom-style="importante"],
+[custom-style="importante"],
+[data-custom-style="Politica"],
+[custom-style="Politica"],
+[data-custom-style="Política"],
+[custom-style="Política"],
+[data-custom-style="politica"],
+[custom-style="politica"],
+[data-custom-style="política"],
+[custom-style="política"],
+[data-custom-style="Nota"],
+[custom-style="Nota"],
+[data-custom-style="nota"],
+[custom-style="nota"],
+[data-custom-style="Notas"],
+[custom-style="Notas"],
+[data-custom-style="notas"],
+[custom-style="notas"] {
+    padding: 12px 18px;
+    margin: 14px auto;
+    border-radius: 6px;
+    box-sizing: border-box;
+    text-align: center !important;
+}
+
+/* Forzar que todos los párrafos y textos dentro de las alertas se centren */
+[data-custom-style="Importante"] *,
+[custom-style="Importante"] *,
+[data-custom-style="importante"] *,
+[custom-style="importante"] *,
+[data-custom-style="Politica"] *,
+[custom-style="Politica"] *,
+[data-custom-style="Política"] *,
+[custom-style="Política"] *,
+[data-custom-style="politica"] *,
+[custom-style="politica"] *,
+[data-custom-style="política"] *,
+[custom-style="política"] *,
+[data-custom-style="Nota"] *,
+[custom-style="Nota"] *,
+[data-custom-style="nota"] *,
+[custom-style="nota"] *,
+[data-custom-style="Notas"] *,
+[custom-style="Notas"] *,
+[data-custom-style="notas"] *,
+[custom-style="notas"] * {
+    text-align: center !important;
+    text-justify: auto !important;
+    hyphens: none;
+    -webkit-hyphens: none;
+    -ms-hyphens: none;
+}
+
+/* Importante: rojo */
+[data-custom-style="Importante"],
+[custom-style="Importante"],
+[data-custom-style="importante"],
+[custom-style="importante"] {
+    background: #fef2f2;
+    border-left: 4px solid #dc2626;
+    color: #991b1b;
+}
+[data-custom-style="Importante"]::before,
+[custom-style="Importante"]::before,
+[data-custom-style="importante"]::before,
+[custom-style="importante"]::before {
+    content: "⚠️ Importante: ";
+    font-weight: bold;
+    display: block;
+    margin-bottom: 4px;
+    text-align: center;
+}
+
+/* Política: azul oscuro */
+[data-custom-style="Politica"],
+[custom-style="Politica"],
+[data-custom-style="Política"],
+[custom-style="Política"],
+[data-custom-style="politica"],
+[custom-style="politica"],
+[data-custom-style="política"],
+[custom-style="política"] {
+    background: #f8fafc;
+    border-left: 4px solid #0f172a;
+    color: #0f172a;
+}
+[data-custom-style="Politica"]::before,
+[custom-style="Politica"]::before,
+[data-custom-style="Política"]::before,
+[custom-style="Política"]::before,
+[data-custom-style="politica"]::before,
+[custom-style="politica"]::before,
+[data-custom-style="política"]::before,
+[custom-style="política"]::before {
+    content: "📖 Política: ";
+    font-weight: bold;
+    display: block;
+    margin-bottom: 4px;
+    text-align: center;
+}
+
+/* Nota: azul claro */
+[data-custom-style="Nota"],
+[custom-style="Nota"],
+[data-custom-style="nota"],
+[custom-style="nota"],
+[data-custom-style="Notas"],
+[custom-style="Notas"],
+[data-custom-style="notas"],
+[custom-style="notas"] {
+    background: #eff6ff;
+    border-left: 4px solid #2563eb;
+    color: #1e40af;
+}
+[data-custom-style="Nota"]::before,
+[custom-style="Nota"]::before,
+[data-custom-style="nota"]::before,
+[custom-style="nota"]::before,
+[data-custom-style="Notas"]::before,
+[custom-style="Notas"]::before,
+[data-custom-style="notas"]::before,
+[custom-style="notas"]::before {
+    content: "ℹ️ Nota: ";
+    font-weight: bold;
+    display: block;
+    margin-bottom: 4px;
+    text-align: center;
+}
+
+/* =========================================================
+   NEUTRALIZACIÓN DE MÁRGENES EN BLOQUES ANIDADOS
+   ========================================================= */
+blockquote {
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+blockquote p,
+[data-custom-style] p,
+[custom-style] p,
+li p {
+    margin-top: 0;
+    margin-bottom: 4px;
+}
+
+blockquote p:last-child,
+[data-custom-style] p:last-child,
+[custom-style] p:last-child,
+li p:last-child {
+    margin-bottom: 0;
+}
+
+[data-custom-style] > *:first-child,
+[custom-style] > *:first-child {
+    margin-top: 0;
+}
+
+[data-custom-style] > *:last-child,
+[custom-style] > *:last-child {
+    margin-bottom: 0;
+}
+
+/* =========================================================
+   IMÁGENES ADAPTABLES Y SIN DEFORMACIÓN
+   ========================================================= */
+img {
+    max-width: 100% !important;   /* Limita al ancho del texto si es muy ancha */
+    height: auto !important;      /* Anula la altura fija en pulgadas y mantiene la proporción */
+    max-height: 80vh;             /* Evita que capturas muy altas ocupen demasiado scroll */
+    object-fit: contain;
+    display: block;
+    margin: 18px auto;            /* Centrado con margen vertical */
+    border-radius: 6px;
+    border: 1px solid #e2e8f0;    /* Borde sutil para delimitar capturas de fondo blanco */
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.07);
+    cursor: zoom-in;              /* Indica que la imagen se puede ampliar */
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+img:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 5px 14px rgba(0, 0, 0, 0.1);
+}
+
+/* =========================================================
+   VISOR LIGHTBOX PARA AMPLIAR IMÁGENES AL HACER CLIC
+   ========================================================= */
+.lightbox-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(15, 23, 42, 0.85);
+    backdrop-filter: blur(4px);
+    z-index: 3000;
+    justify-content: center;
+    align-items: center;
+    padding: 24px;
+    box-sizing: border-box;
+    cursor: zoom-out;
+}
+
+.lightbox-overlay.active {
+    display: flex;
+}
+
+.lightbox-overlay img {
+    max-width: 95vw !important;
+    max-height: 92vh !important;
+    width: auto !important;
+    height: auto !important;
+    border-radius: 8px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+    border: none;
+    cursor: default;
+    transform: none !important;
+}
+
+/* =========================================================
+   TABLAS CON ALTERNANCIA DE FILAS
+   ========================================================= */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 10px 0;
+    font-size: 0.9em;
+}
+
+th, td {
+    border: 1px solid #cbd5e1;
+    padding: 6px 10px;
+    text-align: left;
+}
+
+th {
+    background-color: #f1f5f9;
+    font-weight: 700;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #f8fafc;
+}
+
+tbody tr:hover {
+    background-color: #f1f5f9;
+}
+
+/* =========================================================
+   ADAPTABILIDAD RESPONSIVA (MÓVILES Y TABLETS)
+   ========================================================= */
+@media (max-width: 768px) {
+    body {
+        padding-top: 54px;
+    }
+
+    nav#TOC {
+        position: relative;
+        top: 0;
+        width: 100%;
+        height: auto;
+        border-right: none;
+        border-bottom: 1px solid #e2e8f0;
+    }
+
+    body > *:not(nav#TOC):not(header.top-corporate-bar):not(script):not(style) {
+        margin-left: 4%;
+        margin-right: 4%;
+        margin-top: 15px;
+    }
+}

@@ -1,0 +1,2599 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc 3.11" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Manual de Registro de Medicamentos en TASY</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+  </style>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<header class="top-corporate-bar">
+    <div class="corporate-info">
+        <div class="doc-title-bar">Manual de Registro de Medicamentos en TASY</div>
+        <div class="doc-version-tag">Centro Médico ABC | Versión 1.0 | Última modificación: 26 de septiembre de 2026</div>
+    </div>
+</header>
+
+
+<nav id="TOC" role="doc-toc">
+<ul>
+<li class="toc-history-link"><a href="index.html" style="font-weight: bold; color: #e74c3c;">← Volver al Historial</a></li>
+<li><a href="#introducción" id="toc-introducción"><span
+class="toc-section-number">1</span> Introducción </a>
+<ul>
+<li><a href="#cómo-utilizar-este-manual"
+id="toc-cómo-utilizar-este-manual"><span
+class="toc-section-number">1.1</span> ¿Cómo utilizar este
+manual?</a></li>
+<li><a href="#arquitectura-y-lógica-del-sistema-tasy"
+id="toc-arquitectura-y-lógica-del-sistema-tasy"><span
+class="toc-section-number">1.2</span> Arquitectura y Lógica del Sistema
+Tasy</a></li>
+<li><a href="#estructura" id="toc-estructura"><span
+class="toc-section-number">1.3</span> Estructura</a></li>
+<li><a href="#reglas" id="toc-reglas"><span
+class="toc-section-number">1.4</span> Reglas</a></li>
+<li><a href="#establecimiento-perfil-y-sector"
+id="toc-establecimiento-perfil-y-sector"><span
+class="toc-section-number">1.5</span> Establecimiento, Perfil y
+Sector</a></li>
+<li><a href="#funciones-y-utilitarios"
+id="toc-funciones-y-utilitarios"><span
+class="toc-section-number">1.6</span> Funciones y Utilitarios</a></li>
+<li><a href="#registro-de-materiales"
+id="toc-registro-de-materiales"><span
+class="toc-section-number">1.7</span> Registro de Materiales</a></li>
+<li><a href="#datos-adicionales-del-establecimiento"
+id="toc-datos-adicionales-del-establecimiento"><span
+class="toc-section-number">1.8</span> Datos adicionales del
+establecimiento</a></li>
+<li><a href="#farmacia" id="toc-farmacia"><span
+class="toc-section-number">1.9</span> Farmacia</a>
+<ul>
+<li><a href="#dilución" id="toc-dilución"><span
+class="toc-section-number">1.9.1</span> <span
+data-custom-style="Título 2 Car">Dilución</span></a></li>
+<li><a href="#medicamento" id="toc-medicamento"><span
+class="toc-section-number">1.9.2</span> Medicamento</a></li>
+<li><a href="#prescripción" id="toc-prescripción"><span
+class="toc-section-number">1.9.3</span> Prescripción</a></li>
+<li><a href="#dosis-terapéutica-predeterminada"
+id="toc-dosis-terapéutica-predeterminada"><span
+class="toc-section-number">1.9.4</span> Dosis Terapéutica
+Predeterminada</a></li>
+<li><a href="#limites-terapéuticos" id="toc-limites-terapéuticos"><span
+class="toc-section-number">1.9.5</span> Limites Terapéuticos</a></li>
+<li><a href="#indicaciones-interacciones-reacciones"
+id="toc-indicaciones-interacciones-reacciones"><span
+class="toc-section-number">1.9.6</span> Indicaciones / Interacciones /
+Reacciones</a></li>
+<li><a href="#conversión-de-unidad" id="toc-conversión-de-unidad"><span
+class="toc-section-number">1.9.7</span> Conversión de unidad</a></li>
+<li><a href="#almacenamiento" id="toc-almacenamiento"><span
+class="toc-section-number">1.9.8</span> Almacenamiento</a></li>
+<li><a href="#vía-administración" id="toc-vía-administración"><span
+class="toc-section-number">1.9.9</span> Vía Administración</a></li>
+<li><a href="#sectores" id="toc-sectores"><span
+class="toc-section-number">1.9.10</span> Sectores</a></li>
+<li><a href="#atc" id="toc-atc"><span
+class="toc-section-number">1.9.11</span> ATC</a></li>
+</ul></li>
+<li><a href="#función-medicamento" id="toc-función-medicamento"><span
+class="toc-section-number">1.10</span> Función Medicamento</a></li>
+<li><a href="#registro-del-medicamento"
+id="toc-registro-del-medicamento"><span
+class="toc-section-number">1.11</span> Registro del medicamento</a>
+<ul>
+<li><a href="#intervalos-del-medicamento"
+id="toc-intervalos-del-medicamento"><span
+class="toc-section-number">1.11.1</span> Intervalos del
+medicamento</a></li>
+<li><a href="#ficha-técnica" id="toc-ficha-técnica"><span
+class="toc-section-number">1.11.2</span> Ficha Técnica</a></li>
+<li><a href="#registros" id="toc-registros"><span
+class="toc-section-number">1.11.3</span> Registros</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#alertas" id="toc-alertas"><span
+class="toc-section-number">2</span> Alertas</a>
+<ul>
+<li><a href="#alertas-asistenciales-y-de-prescripción"
+id="toc-alertas-asistenciales-y-de-prescripción"><span
+class="toc-section-number">2.1</span> Alertas Asistenciales y de
+Prescripción</a></li>
+<li><a href="#alertas-de-validación-farmacéutica-y-dispensación"
+id="toc-alertas-de-validación-farmacéutica-y-dispensación"><span
+class="toc-section-number">2.2</span> Alertas de Validación Farmacéutica
+y Dispensación</a></li>
+<li><a href="#alertas-de-stock-y-logística-de-materiales"
+id="toc-alertas-de-stock-y-logística-de-materiales"><span
+class="toc-section-number">2.3</span> Alertas de Stock y Logística de
+Materiales</a></li>
+</ul></li>
+<li><a href="#reglas-de-configuración"
+id="toc-reglas-de-configuración"><span
+class="toc-section-number">3</span> Reglas de configuración</a>
+<ul>
+<li><a href="#configuración-del-registro-de-materiales"
+id="toc-configuración-del-registro-de-materiales"><span
+class="toc-section-number">3.1</span> Configuración del Registro de
+materiales</a></li>
+<li><a href="#dosis-unitarias-enterales"
+id="toc-dosis-unitarias-enterales"><span
+class="toc-section-number">3.2</span> Dosis unitarias enterales</a></li>
+<li><a href="#medicamentos-con-más-de-un-principio-activo"
+id="toc-medicamentos-con-más-de-un-principio-activo"><span
+class="toc-section-number">3.3</span> Medicamentos con más de un
+principio activo</a></li>
+<li><a href="#multidosis-sin-dosis-estándar"
+id="toc-multidosis-sin-dosis-estándar"><span
+class="toc-section-number">3.4</span> <br />
+Multidosis sin dosis estándar</a></li>
+<li><a href="#medicamentos-multidosis-con-dosis-estándar"
+id="toc-medicamentos-multidosis-con-dosis-estándar"><span
+class="toc-section-number">3.5</span> Medicamentos multidosis con dosis
+estándar</a></li>
+<li><a href="#medicamentos-intravenosos"
+id="toc-medicamentos-intravenosos"><span
+class="toc-section-number">3.6</span> Medicamentos intravenosos</a></li>
+<li><a href="#medicamentos-para-infusión-en-bolo"
+id="toc-medicamentos-para-infusión-en-bolo"><span
+class="toc-section-number">3.7</span> Medicamentos para infusión en
+bolo</a></li>
+<li><a href="#nutriciones" id="toc-nutriciones"><span
+class="toc-section-number">3.8</span> Nutriciones</a></li>
+<li><a href="#registros-de-nutrición"
+id="toc-registros-de-nutrición"><span
+class="toc-section-number">3.9</span> Registros de Nutrición</a>
+<ul>
+<li><a href="#elementos-nutricióncpoe"
+id="toc-elementos-nutricióncpoe"><span
+class="toc-section-number">3.9.1</span> Elementos
+nutrición/CPOE</a></li>
+<li><a href="#nutrición-productos-por-tipo-de-nutrición"
+id="toc-nutrición-productos-por-tipo-de-nutrición"><span
+class="toc-section-number">3.9.2</span> Nutrición (Productos por tipo de
+nutrición)</a></li>
+<li><a href="#leche-y-derivados" id="toc-leche-y-derivados"><span
+class="toc-section-number">3.9.3</span> Leche y derivados</a></li>
+</ul></li>
+<li><a href="#nutriciones-enterales"
+id="toc-nutriciones-enterales"><span
+class="toc-section-number">3.10</span> <br />
+Nutriciones Enterales</a></li>
+<li><a href="#nutriciones-parenterales"
+id="toc-nutriciones-parenterales"><span
+class="toc-section-number">3.11</span> Nutriciones Parenterales</a></li>
+<li><a href="#esquemas-de-insulinas"
+id="toc-esquemas-de-insulinas"><span
+class="toc-section-number">3.12</span> Esquemas de Insulinas</a></li>
+</ul></li>
+</ul>
+</nav>
+<h1 data-number="1" id="introducción"><span
+class="header-section-number">1</span> Introducción </h1>
+<p>El presente manual es una guía técnica para la configuración completa
+del catalogo de medicamentos para el Centro Médico ABC, sus flujos y
+reglas son propias de la institución, con Tasy EMR 5.03.</p>
+<h2 data-number="1.1" id="cómo-utilizar-este-manual"><span
+class="header-section-number">1.1</span> ¿Cómo utilizar este
+manual?</h2>
+<p>Con el objetivo de tener una lectura ágil se explicaciones breves y
+diagramas. A menudo se incluyen <a
+href="#cómo-utilizar-este-manual"><span
+data-custom-style="Hyperlink">hipervínculos</span></a> para evitar la
+repetición de pantallas, y crear una navegación referencial.</p>
+<div data-custom-style="Nota">
+<p><span data-custom-style="Subtle Emphasis">Nota: LA información como
+notas aparece en cursiva al final de un bloque para incluir flujos
+alternos o configuraciones adicionales, así como algunas excepciones a
+las reglas generales.</span></p>
+</div>
+<p><span data-custom-style="Subtle Emphasis">En el caso de necesitar
+nombrar algo importante:</span></p>
+<div data-custom-style="Importante">
+<blockquote>
+<p><span data-custom-style="Subtle Emphasis"></span>Si una modificación
+es capaz de entorpecer o detener un flujo se encierra dentro de la
+casilla de importante</p>
+</blockquote>
+</div>
+<p><span data-custom-style="Subtle Emphasis">En el caso de las
+políticas</span></p>
+<div data-custom-style="Politica">
+<blockquote>
+<p>Las políticas del Centro Médico ABC tienen la importancia jerárquica
+más alta, la mejor práctica es siempre consultar la versión más
+reciente.</p>
+</blockquote>
+</div>
+<p>También tablas comparativas</p>
+<table data-custom-style="Tabladelista3-nfasis1">
+<colgroup>
+<col style="width: 18%" />
+<col style="width: 81%" />
+</colgroup>
+<thead>
+<tr>
+<th>Nombre</th>
+<th>Características</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Nota</td>
+<td>Amplia las instrucciones que se y da flujos internos</td>
+</tr>
+<tr>
+<td>Importante</td>
+<td>Alerta de modificaciones que pueden detener un flujo</td>
+</tr>
+<tr>
+<td>Política</td>
+<td>Maxima regla, esta manda sobre la configuración de Tasy</td>
+</tr>
+</tbody>
+</table>
+<h2 data-number="1.2" id="arquitectura-y-lógica-del-sistema-tasy"><span
+class="header-section-number">1.2</span> Arquitectura y Lógica del
+Sistema Tasy</h2>
+<p>De forma muy breve, el sistema Tasy EMR opera mediante un modelo de
+base de datos relacional jerárquica que vincula catálogos maestros de
+artículos con reglas de negocio predefinidas. Esto se traduce en que
+ningún valor puede ser creado si no se configura un dato maestro y
+después una regla.</p>
+<p>Ejemplo: para configurar una alerta, primero se registran los
+elementos en el catálogo. Al crear la vía "Intravenosa" y el medicamento
+"Potasio", el sistema les asigna automáticamente un número de
+identificación a cada uno (por ejemplo, ID 1 e ID 2). La regla de
+seguridad se programa uniendo exclusivamente esos números (ID 1 + ID 2 =
+Alerta). De este modo, si posteriormente se edita el texto de
+"Intravenosa" a "I.V.", la alerta sigue funcionando sin requerir
+ajustes, porque la base de datos continúa evaluando la conexión entre
+los códigos numéricos originales.</p>
+<h2 data-number="1.3" id="estructura"><span
+class="header-section-number">1.3</span> Estructura</h2>
+<p>Inicialmente debemos registrar la estructura que contendrá los ítems
+que pertenecen a una misma clasificación, con el fin de agrupar y
+administrar cada material de acuerdo con su uso. Tasy permite hacer esta
+clasificación en base a tres niveles Grupo, Subgrupo y Clase.</p>
+<p><img src="media/image1.jpeg"
+style="width:11.53681in;height:5.17569in" /></p>
+<p>Estos a su vez pueden inactivarse o bien, configurarse:</p>
+<p><img src="media/image2.jpeg"
+style="width:10.82431in;height:4.75903in" /></p>
+<p>Para grupo:</p>
+<table data-custom-style="Tablanormal1">
+<colgroup>
+<col style="width: 22%" />
+<col style="width: 77%" />
+</colgroup>
+<thead>
+<tr>
+<th>Campo</th>
+<th>Descripción</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Grupo</td>
+<td>Código numérico o identificador único del grupo del material.
+Corresponde al primer nivel de agrupación dentro de la estructura.</td>
+</tr>
+<tr>
+<td>Descripción</td>
+<td>Describir el nombre o denominación del grupo de materiales (ej.
+MEDICAMENTOS).</td>
+</tr>
+<tr>
+<td>Activo</td>
+<td>Marcar para indicar si la situación del grupo de material está
+activa en el sistema.</td>
+</tr>
+<tr>
+<td>Presentar Historial de salud</td>
+<td>Informar si debe presentar en el buscador de alergias en el
+histórico de salud.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Para subgrupo</strong></p>
+<table data-custom-style="Tablanormal1">
+<colgroup>
+<col style="width: 14%" />
+<col style="width: 85%" />
+</colgroup>
+<thead>
+<tr>
+<th>Campo</th>
+<th>Descripción</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Grupo</td>
+<td>Código del subgrupo del material.</td>
+</tr>
+<tr>
+<td>Descripción</td>
+<td>Describir el nombre del subgrupo del material (ej. SISTEMA
+NERVIOSO).</td>
+</tr>
+<tr>
+<td>Activo</td>
+<td>Informar si la situación del subgrupo del material está activa. Para
+finalizar el registro dar clic en guardar.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Y para Clase Material</strong></p>
+<table data-custom-style="Tablanormal1">
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 74%" />
+</colgroup>
+<thead>
+<tr>
+<th>Campo</th>
+<th>Descripción</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Clase</td>
+<td>Generado por el sistema, con la secuencia interna de la tabla (ej.
+23115).</td>
+</tr>
+<tr>
+<td>REP</td>
+<td>Informar la orden de presentación del ítem en la prescripción
+electrónica.</td>
+</tr>
+<tr>
+<td>Descripción</td>
+<td>Describir el nombre de la clase del material (ej. ÁCIDO SALICÍLICO Y
+DERIVADOS).</td>
+</tr>
+<tr>
+<td>Tipo clase</td>
+<td>Seleccionar el tipo de clase del material.</td>
+</tr>
+<tr>
+<td>Código del sistema anterior</td>
+<td>Código del sistema integrante.</td>
+</tr>
+<tr>
+<td>Cuenta Contable</td>
+<td>Informe la cuenta contable que pertenece a esta clase.</td>
+</tr>
+<tr>
+<td>Activo</td>
+<td>Identificar si la situación de la clase del material está activa.
+Para finalizar el registro dar clic en guardar.</td>
+</tr>
+</tbody>
+</table>
+<p>Estos grupo permiten extraer informes y a su vez usarse para
+configurar reglas</p>
+<h2 data-number="1.4" id="reglas"><span
+class="header-section-number">1.4</span> Reglas</h2>
+<h2 data-number="1.5" id="establecimiento-perfil-y-sector"><span
+class="header-section-number">1.5</span> Establecimiento, Perfil y
+Sector</h2>
+<p>La interfaz gráfica de Tasy nos permite capturar esta información y
+reglas por medio de formularios dinámicos, la visión y edición de los
+mismos a su vez están controlados por la información del
+“Establecimiento”, “Perfil” y Sector”.</p>
+<p><img src="media/image3.png"
+style="width:6.5in;height:1.34306in" /></p>
+<h2 data-number="1.6" id="funciones-y-utilitarios"><span
+class="header-section-number">1.6</span> Funciones y Utilitarios</h2>
+<p>Para la creación de registros y reglas usaremos los formularios
+contenidos en “Funciones” y “Utilitarios”, aquí también vamos a
+previsualizar la funcionalidad para el usuario final.</p>
+<p><img src="media/image4.png"
+style="width:6.5in;height:1.11944in" /></p>
+<h2 data-number="1.7" id="registro-de-materiales"><span
+class="header-section-number">1.7</span> Registro de Materiales</h2>
+<p>Los principales para creación/edición son “Registro de Materiales” y
+“Medicamentos”</p>
+<p><img src="media/image5.png"
+style="width:2.42708in;height:0.875in" /></p>
+<p>Dentro de Registro de Materiales se encuentran los siguientes campos
+para ingresar o seleccionar información, aquellos marcados con asterisco
+rojo son obligatorios.</p>
+<p><img src="media/image6.png"
+style="width:10.59258in;height:7.30063in" /></p>
+<p>Los campos para ingresar o seleccionar información son:</p>
+<table data-custom-style="Tablaconcuadrcula4-nfasis5">
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 74%" />
+</colgroup>
+<thead>
+<tr>
+<th>Campo</th>
+<th>Descripción</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Código</td>
+<td>Código del material, definido por el sistema. No modificable.</td>
+</tr>
+<tr>
+<td>Sistema anterior</td>
+<td>Informar el código del material o medicamento en el sistema anterior
+(SAP).</td>
+</tr>
+<tr>
+<td>Descripción</td>
+<td>Informar la descripción del material.</td>
+</tr>
+<tr>
+<td>Descripción corta</td>
+<td>Informar la descripción reducida del material. Esta información es
+utilizada en las <strong>impresiones de etiquetas.</strong></td>
+</tr>
+<tr>
+<td>Tipo de material</td>
+<td>Seleccionar el tipo de material.</td>
+</tr>
+<tr>
+<td>Grupo Receta</td>
+<td>Seleccionar el grupo de receta.</td>
+</tr>
+<tr>
+<td>Unidad medida de compra</td>
+<td>Selecciona la unidad de medida de compra, por ejemplo: caja,
+paquete, sobre.</td>
+</tr>
+<tr>
+<td>Unidad de medida consumo</td>
+<td>Seleccionar la unidad de medida de consumo, por ejemplo: pieza,
+frasco, ámpula</td>
+</tr>
+<tr>
+<td>Unidad medida solicitud</td>
+<td>Seleccionar la unidad de medida de solicitud del material, por
+ejemplo: pieza, frasco, ámpula.</td>
+</tr>
+<tr>
+<td>Compra x stock</td>
+<td>Informar la cantidad que contiene en una unidad de compra con
+relación a unidad de stock.</td>
+</tr>
+<tr>
+<td>Solicitud mínima x consumo</td>
+<td>Informar la cantidad mínima de solicitud a la farmacia.</td>
+</tr>
+<tr>
+<td>Stock por consumo</td>
+<td>Informar la cantidad que contiene en una unidad de stock con
+relación a unidad de consumo.</td>
+</tr>
+<tr>
+<td>Unidad medida stock</td>
+<td>Seleccionar la unidad de medida de stock.</td>
+</tr>
+<tr>
+<td>Grupo</td>
+<td>Código del grupo del material.</td>
+</tr>
+<tr>
+<td>Subgrupo</td>
+<td>Código del subgrupo del material.</td>
+</tr>
+<tr>
+<td>Clase</td>
+<td>Seleccionar la clase del material.</td>
+</tr>
+<tr>
+<td>Nombre genérico</td>
+<td>Buscar el medicamento genérico (previamente registrado) cuando el
+medicamento sea el comercial.</td>
+</tr>
+<tr>
+<td>Material Stock</td>
+<td>Buscar el material donde debe ser controlado el stock.</td>
+</tr>
+<tr>
+<td>Días</td>
+<td>Informe el número de días de validez.</td>
+</tr>
+<tr>
+<td>Horas límite de uso</td>
+<td>Informa el número de horas que un material puede ser utilizado por
+el paciente (Sirve para exigir justificación cuando sea pedida para
+utilizarse con plazo inferior al del registro)</td>
+</tr>
+<tr>
+<td>Dosis usual por horario</td>
+<td>Informar la dosis máxima usual por horario de administración.</td>
+</tr>
+<tr>
+<td>Prioridad comercial</td>
+<td>Informe el orden de prioridad entre los medicamentos comerciales de
+un mismo genérico (mayor número es mayor prioridad)</td>
+</tr>
+<tr>
+<td>Número de parte</td>
+<td>Informar el código del fabricante del producto.</td>
+</tr>
+<tr>
+<td>Vía de administración</td>
+<td>Seleccionar la vía de administración del medicamento.</td>
+</tr>
+<tr>
+<td>Familia</td>
+<td>Seleccionar la familia a la cual el material o medicamento
+pertenece.</td>
+</tr>
+<tr>
+<td>Consignado</td>
+<td>Identificar si el material es consignado, no consignado o
+ambos.</td>
+</tr>
+<tr>
+<td>Ubicación</td>
+<td>Seleccionar la localización adecuada para el material o
+medicamento.</td>
+</tr>
+<tr>
+<td>Disponible en el mercado</td>
+<td>Informar si el material está disponible fácilmente en el mercado
+para compra.</td>
+</tr>
+<tr>
+<td>Fabricante</td>
+<td>Seleccionar el fabricante del material.</td>
+</tr>
+<tr>
+<td>Cobrar del paciente</td>
+<td>Informar si el material debe ser cobrado en la cuenta del
+paciente</td>
+</tr>
+<tr>
+<td>Situación activa</td>
+<td>Informar si la situación del material está activa o no</td>
+</tr>
+<tr>
+<td>Obliga vía aplicación</td>
+<td>Informar si es obligatorio la información de la vía de
+aplicación</td>
+</tr>
+<tr>
+<td>Precio última compra</td>
+<td>Identificar si se debe actualizar la tabla de precios. Solamente
+para actualización de la tabla de precios del material que es hecho en
+el momento del cálculo de la factura y no tiene ningún vínculo con
+información de la última compra.</td>
+</tr>
+<tr>
+<td>Información última compra</td>
+<td>Identificar si se debe mostrar la información de última compra de
+este material</td>
+</tr>
+<tr>
+<td>Curva ABC</td>
+<td>Identificar si el material formará parte del cálculo de la curva
+ABC</td>
+</tr>
+<tr>
+<td>Necesita receta</td>
+<td>Marque si el medicamento necesita receta especial para medicamentos
+controlados</td>
+</tr>
+<tr>
+<td>Químico peligroso</td>
+<td>Informar si este material es o contiene algún químico considerado
+peligroso</td>
+</tr>
+</tbody>
+</table>
+<p>Y las casillas</p>
+<table data-custom-style="Tablaconcuadrcula4-nfasis5">
+<colgroup>
+<col style="width: 22%" />
+<col style="width: 77%" />
+</colgroup>
+<thead>
+<tr>
+<th>Casilla</th>
+<th>Descripción</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Situación activa</td>
+<td>Informar si la situación del material está activa o no.</td>
+</tr>
+<tr>
+<td>Obliga vía aplicación</td>
+<td>Informar si es obligatorio la información de la vía de
+aplicación.</td>
+</tr>
+<tr>
+<td>Precio última compra</td>
+<td>Identificar si se debe actualizar la tabla de precios. Solamente
+para actualización de la tabla de precios del material que es hecho en
+el momento del cálculo de la factura y no tiene ningún vínculo con
+información de la última compra.</td>
+</tr>
+<tr>
+<td>Información última compra</td>
+<td>Identificar si se debe mostrar la información de última compra de
+este material.</td>
+</tr>
+<tr>
+<td>Curva ABC</td>
+<td>Identificar si el material formará parte del cálculo de la curva
+ABC</td>
+</tr>
+<tr>
+<td>Necesita receta</td>
+<td>Marque si el medicamento necesita receta especial para medicamentos
+controlados.</td>
+</tr>
+<tr>
+<td>Químico peligroso</td>
+<td>Informar si este material es o contiene algún químico considerado
+peligroso.</td>
+</tr>
+</tbody>
+</table>
+<p>Este registro es para todos los materiales de manera independiente al
+campus, para agregar un material al campus correspondiente de la sesión
+debemos “ir para los detalles”,</p>
+<h2 data-number="1.8" id="datos-adicionales-del-establecimiento"><span
+class="header-section-number">1.8</span> Datos adicionales del
+establecimiento</h2>
+<p>Los datos del establecimiento permiten saber a Tasy el comportamiento
+del Ítem en las distintas funciones del sistema además de proveer
+información para el resurtimiento del material:</p>
+<p><img src="media/image7.png"
+style="width:10.75927in;height:4.68374in" /></p>
+<table data-custom-style="Tablaconcuadrcula4-nfasis5">
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 74%" />
+</colgroup>
+<thead>
+<tr>
+<th>Campo</th>
+<th>Descripción</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Curva ABC</td>
+<td>Generado por el sistema con la posición ABC del material en el
+establecimiento.</td>
+</tr>
+<tr>
+<td>Peso kg</td>
+<td>Informe el peso en kg.</td>
+</tr>
+<tr>
+<td>Cotizaciones</td>
+<td>Informar el número mínimo de cotizaciones que el material debe tener
+en la compra.</td>
+</tr>
+<tr>
+<td>Cantidad mínima (resurtimiento)</td>
+<td>Calculado por el sistema en el cálculo de resurtimiento. Para
+obedecer valor informado fijo, los campos de días del proveedor, días de
+stock mínimo y días de intervalo deben quedar en cero.</td>
+</tr>
+<tr>
+<td>Cantidad máxima (resurtimiento)</td>
+<td>Generado por el sistema con el stock máximo que deberá existir en
+este establecimiento</td>
+</tr>
+<tr>
+<td>Punto de reorden (reabastecimiento)</td>
+<td>Generado en el cálculo del punto de pedido. Stock mínimo + (consumo
+diario * días proveedor). Para obedecer valor informado fijo, los campos
+de días de proveedor, días de stock mínimo y días de intervalo deben
+estar en cero</td>
+</tr>
+<tr>
+<td>Mes de consumo</td>
+<td>Generado por el sistema con el número de meses utilizados para
+cálculo del consumo mensual</td>
+</tr>
+<tr>
+<td>Fecha actualización consumo</td>
+<td>Generado por el sistema con la fecha de actualización del consumo
+mensual y punto de pedido</td>
+</tr>
+<tr>
+<td>Cantidad consumo mensual</td>
+<td>Información generada de forma automática por el sistema cuando se
+calcula el punto de pedido en la valoración</td>
+</tr>
+<tr>
+<td>Desvío estándar</td>
+<td>Información generada de forma automática por el sistema, con el
+desvío predeterminado del consumo de material, que es calculado por el
+sistema al momento de calcular el punto de pedido con base en las
+operaciones de consumo de stock y el número de meses informado en los
+parámetros de compras.</td>
+</tr>
+<tr>
+<td>Material cuenta</td>
+<td>Seleccionar el material que debe a interconsulta en la cuenta, sirve
+para mostrar en la cuenta cuando el material es diferente del material
+de stock, sirve para ser usado por la regla de material de la
+cuenta.</td>
+</tr>
+<tr>
+<td>Kit material</td>
+<td>Seleccionar el kit material que se aplica a este material, a la
+dispensación de materiales y medicamentos.</td>
+</tr>
+<tr>
+<td>Costo</td>
+<td>Seleccionar la clasificación de costo del material o medicamento.
+Servirá para identificar anticipadamente cuales ítems tienen costo alto
+y pueden ser rechazados por el convenio.</td>
+</tr>
+<tr>
+<td>Serie</td>
+<td>Identificar si el material tiene el control por el número de
+serie.</td>
+</tr>
+<tr>
+<td>Sistema anterior</td>
+<td>Código del sistema anterior</td>
+</tr>
+</tbody>
+</table>
+<p>Y las casillas</p>
+<table data-custom-style="Tablaconcuadrcula4-nfasis5">
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 74%" />
+</colgroup>
+<thead>
+<tr>
+<th>Casilla</th>
+<th>Descripción</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Stock lote</td>
+<td>Si genera lotes por cada compra, permite llevar la trazabilidad</td>
+</tr>
+<tr>
+<td>Estandarizado</td>
+<td>Informar si el material es o no estandarizado para utilización en la
+prescripción médica.</td>
+</tr>
+<tr>
+<td>Generar resurtimiento</td>
+<td>Informar si el sistema debe generar resurtimiento para este
+establecimiento. Para generar el resurtimiento el sistema aún
+identificará si el material está activo, si el mismo es controlador de
+stock y si existe en los saldos de stock.</td>
+</tr>
+<tr>
+<td>Permite prescribir en la unidad de consumo</td>
+<td>Identificar si es permitida la prescripción de este medicamento en
+la unidad de consumo.</td>
+</tr>
+<tr>
+<td>Prescripción</td>
+<td>Identificar si el material puede ser prescrito.</td>
+</tr>
+<tr>
+<td>Requisición</td>
+<td>Identificar si el material puede ser requerido.</td>
+</tr>
+<tr>
+<td>Baja stock paciente</td>
+<td>Informar si el sistema debe bajar stock cuando provisto al
+paciente.</td>
+</tr>
+<tr>
+<td>Material de stock</td>
+<td>Informar si el sistema debe controlar el stock del material para
+este establecimiento.</td>
+</tr>
+</tbody>
+</table>
+<p>De igual manera dentro del modulo de registro de materiales tenemos
+el módulo de Farmacia</p>
+<p><img src="media/image8.png"
+style="width:3.60865in;height:2.6919in" /></p>
+<h2 data-number="1.9" id="farmacia"><span
+class="header-section-number">1.9</span> Farmacia</h2>
+<p>En esta carpeta son registrados los campos específicos de
+medicamentos; dilución, prescripción, conversión de unidades, entro
+otros. Esta información ayudará a la practicidad y datos estandarizados
+durante la prescripción.</p>
+<h3 data-number="1.9.1" id="dilución"><span
+class="header-section-number">1.9.1</span> <span
+data-custom-style="Título 2 Car">Dilución</span></h3>
+<p>El usuario responsable por la farmacia informa el diluyente estándar
+del ítem. La dilución puede ser restringida por sector, edad del
+paciente, peso, etc. Se divide en diferente condicionales el bloque si:
+contiene los campos para seleccionar las características que debe
+cumplir la prescripción:</p>
+<p><img src="media/image9.png"
+style="width:9.62583in;height:8.89244in" /></p>
+<table data-custom-style="Tablaconcuadrcula4-nfasis5">
+<colgroup>
+<col style="width: 34%" />
+<col style="width: 65%" />
+</colgroup>
+<thead>
+<tr>
+<th>Campo</th>
+<th>Descripción</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Establecimiento</td>
+<td>Seleccionar el establecimiento o sede donde aplica la regla de
+dilución.</td>
+</tr>
+<tr>
+<td>Unidad medida medicamento</td>
+<td>Seleccionar la unidad de medida del medicamento para la dilución
+(ej. Ámpula).</td>
+</tr>
+<tr>
+<td>Dosis mínima</td>
+<td>Informar la dosis mínima requerida para aplicar la regla de
+dilución.</td>
+</tr>
+<tr>
+<td>Dosis máxima</td>
+<td>Informar la dosis máxima permitida para aplicar la regla de
+dilución.</td>
+</tr>
+<tr>
+<td>Vía de administración</td>
+<td>Seleccionar la vía de administración del medicamento (ej. IV -
+Intravenosa).</td>
+</tr>
+<tr>
+<td>Vía excluir</td>
+<td>Seleccionar la vía de administración que queda excluida de esta
+regla.</td>
+</tr>
+<tr>
+<td>Sector</td>
+<td>Seleccionar el sector o unidad de internación específica a la que
+aplica la regla.</td>
+</tr>
+<tr>
+<td>Sector excluir</td>
+<td>Seleccionar el sector o unidad que queda excluida de esta
+regla.</td>
+</tr>
+<tr>
+<td>Perfil</td>
+<td>Seleccionar el perfil de atención o tipo de paciente al que aplica
+la regla.</td>
+</tr>
+<tr>
+<td>Restricción</td>
+<td>Definir o seleccionar el tipo de restricción aplicable a la
+dilución.</td>
+</tr>
+<tr>
+<td>Edad mínima (Año(s) / Mes(es) / Día(s))</td>
+<td>Informar el límite inferior de edad del paciente (en años, meses o
+días) para aplicar la regla.</td>
+</tr>
+<tr>
+<td>Edad máxima (Año(s) / Mes(es) / Día(s))</td>
+<td>Informar el límite superior de edad del paciente (en años, meses o
+días) para aplicar la regla.</td>
+</tr>
+</tbody>
+</table>
+<p>El bloque entonces incluye los datos que se llenaran y las
+condiciones de las mismas:</p>
+<p><img src="media/image10.png"
+style="width:9.71751in;height:6.9006in" /></p>
+<table data-custom-style="Tablaconcuadrcula4-nfasis5">
+<colgroup>
+<col style="width: 27%" />
+<col style="width: 72%" />
+</colgroup>
+<thead>
+<tr>
+<th>Campo</th>
+<th>Descripción</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Diluyente</td>
+<td>Buscar y seleccionar el código y descripción del vehículo o solución
+diluyente a utilizar.</td>
+</tr>
+<tr>
+<td>Cantidad</td>
+<td>Informar la cantidad del diluyente necesaria para la
+preparación.</td>
+</tr>
+<tr>
+<td>Unidad de medida</td>
+<td>Seleccionar la unidad de medida del diluyente (ej. Mililitros).</td>
+</tr>
+<tr>
+<td>Regla dilución</td>
+<td>Seleccionar la modalidad o tipo de regla para la dilución (ej.
+Dilución fija).</td>
+</tr>
+<tr>
+<td>Concentración ideal</td>
+<td>Informar el valor numérico de la concentración ideal final
+recomendada.</td>
+</tr>
+<tr>
+<td>Unidad de medida (Concentración)</td>
+<td>Seleccionar la unidad de medida correspondiente a la concentración
+ideal.</td>
+</tr>
+<tr>
+<td>Por</td>
+<td>Seleccionar el volumen o factor base sobre el cual se calcula la
+concentración ideal.</td>
+</tr>
+<tr>
+<td>Cantidad referencia</td>
+<td>Informar la cantidad de referencia utilizada para los cálculos de la
+dilución.</td>
+</tr>
+<tr>
+<td>Substraer volumen del medicamento</td>
+<td>Marcar si se debe restar el volumen del medicamento del volumen
+total de la dilución.</td>
+</tr>
+<tr>
+<td>Minutos para aplicación</td>
+<td>Informar el tiempo estimado o recomendado de infusión/aplicación en
+minutos.</td>
+</tr>
+<tr>
+<td>Prioridad</td>
+<td>Informar el orden de prioridad o jerarquía de la regla de
+dilución.</td>
+</tr>
+<tr>
+<td>Motivo de baja</td>
+<td>Seleccionar la razón por la cual se inactiva o da de baja la regla
+de dilución.</td>
+</tr>
+<tr>
+<td>Referencia</td>
+<td>Informar alguna observación, nota bibliográfica o fuente de consulta
+técnica para la dilución.</td>
+</tr>
+<tr>
+<td>Volumen (ml)</td>
+<td>Informar el volumen total resultante expresado en mililitros.</td>
+</tr>
+<tr>
+<td>Volumen de medicación (ml)</td>
+<td>Informar el volumen específico correspondiente solo a la dosis del
+medicamento en mililitros.</td>
+</tr>
+</tbody>
+</table>
+<p>Y las siguientes casillas</p>
+<table data-custom-style="Tablaconcuadrcula4-nfasis5">
+<colgroup>
+<col style="width: 27%" />
+<col style="width: 72%" />
+</colgroup>
+<thead>
+<tr>
+<th>Campo</th>
+<th>Descripción</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Actualizar tiempo de aplicación, aunque ya informado</td>
+<td>Marcar si el sistema debe sobrescribir el tiempo de aplicación en la
+prescripción aunque el médico ya lo haya indicado.</td>
+</tr>
+<tr>
+<td>Generar lote para la dilución</td>
+<td>Marcar si el sistema debe generar automáticamente un control de lote
+para la mezcla/dilución preparada.</td>
+</tr>
+<tr>
+<td>Diluir la unidad entera y no la dosis prescrita</td>
+<td>Marcar si se debe calcular la dilución considerando la
+ampolla/unidad completa en lugar de la dosis exacta prescrita.</td>
+</tr>
+<tr>
+<td>Generar lote según la regla dispensación</td>
+<td>Marcar para asignar el lote de la dilución basándose en las reglas
+preconfiguradas de dispensación de la farmacia.</td>
+</tr>
+</tbody>
+</table>
+<h3 data-number="1.9.2" id="medicamento"><span
+class="header-section-number">1.9.2</span> Medicamento</h3>
+<p>En esta carpeta se registra la información básica del medicamento,
+como el principio activo, concentración, unidad de medida básica, etc.
+Los campos de unidad de medida, dosis límite y límite son utilizados
+para informar la dosis máxima</p>
+<p>permitida por administración.</p>
+<p><img src="media/image11.png"
+style="width:9.80918in;height:8.89244in" /></p>
+<table data-custom-style="Tablaconcuadrcula4-nfasis5">
+<colgroup>
+<col style="width: 24%" />
+<col style="width: 75%" />
+</colgroup>
+<thead>
+<tr>
+<th>Campo</th>
+<th>Descripción</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Medicamento CIH</td>
+<td>Se selecciona el ingrediente activo relacionado al control de
+infecciones, esto permite un vínculo para detección de paciente con
+múltiples antibióticos.</td>
+</tr>
+<tr>
+<td>Concentración</td>
+<td>Permite informar la concentración de la administración, en el caso
+de unidosis se informa la concentración del empaque unitario; si es
+multidosis si informa la concentración total de la caja, frasco,
+etc.</td>
+</tr>
+<tr>
+<td>Generar orden producción mixtura</td>
+<td>Utilizado para la cabina de preparación, indica si el medicamento
+puede generar una orden de producción o no.</td>
+</tr>
+<tr>
+<td>Tipo de solución</td>
+<td>Informa si el medicamento en solución es ácido o básico.</td>
+</tr>
+</tbody>
+</table>
+<p>Y las siguientes casillas:</p>
+<table data-custom-style="Tablaconcuadrcula4-nfasis5">
+<colgroup>
+<col style="width: 32%" />
+<col style="width: 67%" />
+</colgroup>
+<thead>
+<tr>
+<th>Casilla</th>
+<th>Descripción</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Fotosensible</td>
+<td>Identificar si el medicamento es foto sensible.</td>
+</tr>
+<tr>
+<td>Termolábil</td>
+<td>Identificar si este medicamento es un termolábil. Definición: Que
+tiende a descomponerse bajo la influencia del calor, es decir,
+compuestos termolábiles son compuestos que se descomponen por el efecto
+de la temperatura.</td>
+</tr>
+<tr>
+<td>Hacer obligatoria justificación cuando dosis superar permitida</td>
+<td>Indicar si al lanzar el material en la prescripción el sistema debe
+obligar la información de la justificación cuando la dosis informada
+fuere mayor que la permitida.</td>
+</tr>
+<tr>
+<td>Manipulado</td>
+<td>Indicar si el ítem es manipulado.</td>
+</tr>
+<tr>
+<td>Contiene látex en la composición</td>
+<td>Indicar si el material contiene látex en su composición.</td>
+</tr>
+<tr>
+<td>Profilaxis farmacológicas para tromboembolismo venoso</td>
+<td>Informar si se considera profilaxis mecánica para tromboembolismo
+venoso (TEV).</td>
+</tr>
+<tr>
+<td>Embalaje múltiple</td>
+<td>Indicar si el medicamento está en Embalaje Múltiple.</td>
+</tr>
+<tr>
+<td>Multidosis</td>
+<td>Identificar si el medicamento es o no de uso único. Por ejemplo:
+Novalgina 500 mg/ml Frasco 20 ml, médico prescribe 20 g</td>
+</tr>
+</tbody>
+</table>
+<h3 data-number="1.9.3" id="prescripción"><span
+class="header-section-number">1.9.3</span> Prescripción</h3>
+<p>La carpeta prescripción es una de las más importantes en el registro
+básico de medicamentos pues controla la visualización estándar del
+médico al seleccionar el medicamento desde la función CPOE, es decir,
+controla la dosis inicial, presentación, intervalo, uso, etc.</p>
+<p><img src="media/image12.png"
+style="width:13.25948in;height:9.60917in" /></p>
+<table data-custom-style="Tablaconcuadrcula4-nfasis5">
+<colgroup>
+<col style="width: 24%" />
+<col style="width: 75%" />
+</colgroup>
+<thead>
+<tr>
+<th>Campo</th>
+<th>Descripción</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Control de días de utilización</td>
+<td>Seleccionar la forma que el sistema debe controlar la utilización de
+los antimicrobianos en función de los días(Empezando desde el día 1,
+desde el día 0 o si no debe controlar).</td>
+</tr>
+<tr>
+<td>Liberación de antimicrobianos</td>
+<td>Seleccionar la forma que el sistema debe liberar la utilización de
+antimicrobianos.</td>
+</tr>
+<tr>
+<td>Objetivo de uso</td>
+<td>Seleccionar el fin de uso estándar del medicamento (profiláctico,
+terapéutico, etc).</td>
+</tr>
+<tr>
+<td>Número máximo de días</td>
+<td>Informar el número máximo de días seguidos que la persona puede
+recibir esa medicación (Se relaciona con el campo de control de días de
+utilización).</td>
+</tr>
+<tr>
+<td>Dispositivo de infusión</td>
+<td>Seleccionar el tipo de bomba que debe ser utilizada en la
+administración de la medicación o si no utiliza durante la
+administración.</td>
+</tr>
+<tr>
+<td>Intervalo estándar de la prescripción</td>
+<td>Informar el intervalo estándar de administración del ítem en la
+prescripción (cuando es un medicamento).</td>
+</tr>
+<tr>
+<td>Unidad medida prescripción</td>
+<td>Seleccionar la unidad de medida para la dosis inicial de la
+prescripción.</td>
+</tr>
+<tr>
+<td>Dosis prescripción</td>
+<td>Informar la dosis inicial de la prescripción. (Depende del registro
+de unidad de medida prescripción)</td>
+</tr>
+<tr>
+<td>Minutos aplicación</td>
+<td>Informar el número de minutos en que el medicamento debe ser
+aplicado en el paciente. En la prescripción el sistema colocará el
+número de horas y los minutos. Si son informados 150 minutos, en la
+prescripción será presentado como 2 horas y 30 minutos.</td>
+</tr>
+<tr>
+<td>Puede ser componente de la solución</td>
+<td>Identificar si el medicamento puede formar parte de una solución;
+por ejemplo, las tabletas que no pueden ser parte de una solución de ser
+indicada la opción correspondiente para que en la CPOE no exista la
+opción de vincularse a una.</td>
+</tr>
+<tr>
+<td>Estándar de administración CPOE</td>
+<td>Seleccionar si al prescribir este ítem se deben presentar las
+opciones de medicamento o de solución.</td>
+</tr>
+<tr>
+<td>Tipo de solución CPOE</td>
+<td>Si el ítem es una solución, se debe seleccionar la forma inicial de
+prescripción se recomienda la opción “Continua”.</td>
+</tr>
+<tr>
+<td>Regla dilución</td>
+<td>Identificar si el medicamento debe ser diluido en la aplicación al
+paciente.</td>
+</tr>
+<tr>
+<td>Clasificación del medicamento</td>
+<td>Seleccionar si el medicamento es de patente, similar o
+genérico.</td>
+</tr>
+</tbody>
+</table>
+<p>Y las siguientes casillas:</p>
+<table data-custom-style="Tablaconcuadrcula4-nfasis5">
+<colgroup>
+<col style="width: 31%" />
+<col style="width: 68%" />
+</colgroup>
+<thead>
+<tr>
+<th>Casilla</th>
+<th>Descripción</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Sexo</td>
+<td>Marcar si el medicamento es de uso exclusivo en un sexo o es posible
+usar en ambos.</td>
+</tr>
+<tr>
+<td>Generar lote para Dispensación de Prescripciones</td>
+<td>Marcar el Check box para generar una orden de surtimiento (lote) al
+generarse la prescripción.</td>
+</tr>
+<tr>
+<td>Medicamento de riesgo potencial</td>
+<td>Marcar el Check box cuando el medicamento es de alto riesgo (Se
+visualizará una leyenda para el médico y la enfermera en sus respectivas
+funciones).</td>
+</tr>
+<tr>
+<td>Permite editar dosis en la prescripción</td>
+<td>Marcar el Check box para que el médico pueda editar los datos del
+medicamento al generar la prescripción.</td>
+</tr>
+<tr>
+<td>Prescripción</td>
+<td>Informar si el material puede ser prescrito, esto incluye
+copias/extensiones de prescripciones/planes terapéuticos.</td>
+</tr>
+<tr>
+<td>Verificar si el medicamento está en duplicidad en el día</td>
+<td>Marcar si el sistema debe verificar duplicidad del medicamento en el
+plan terapéutico en el día.</td>
+</tr>
+<tr>
+<td>Material de alta vigilancia</td>
+<td>Marcar el Check box si el ítem es de una alta vigilancia.</td>
+</tr>
+<tr>
+<td>Permite dosis fraccionadas</td>
+<td>Marcar si el ítem puede prescribirse en dosis fraccionadas (0.5
+tabletas, por ejemplo)</td>
+</tr>
+<tr>
+<td>Medicamento con doble chequeo</td>
+<td>Informar si el medicamento requiere que dos personas verifiquen la
+administración.</td>
+</tr>
+<tr>
+<td>Glucosa</td>
+<td>Marcar cuando el ítem informado es glucosa</td>
+</tr>
+</tbody>
+</table>
+<h3 data-number="1.9.4" id="dosis-terapéutica-predeterminada"><span
+class="header-section-number">1.9.4</span> Dosis Terapéutica
+Predeterminada</h3>
+<p>Esta carpeta es un complemento de la carpeta “Prescripción” pues
+permite generar reglas a los medicamentos por peso, edad y/o unidades de
+medida especializadas</p>
+<p><img src="media/image13.png"
+style="width:9.81752in;height:6.66724in" /></p>
+<p><img src="media/image14.png"
+style="width:9.80918in;height:8.8091in" /></p>
+<table data-custom-style="Tablaconcuadrcula4-nfasis5">
+<colgroup>
+<col style="width: 40%" />
+<col style="width: 59%" />
+</colgroup>
+<thead>
+<tr>
+<th>Campo</th>
+<th>Descripción</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Establecimiento</td>
+<td>Seleccionar el establecimiento o sede donde aplica la regla de dosis
+terapéutica predeterminada.</td>
+</tr>
+<tr>
+<td>Sector atención</td>
+<td>Seleccionar el sector o unidad de atención del paciente donde se
+aplicará esta configuración.</td>
+</tr>
+<tr>
+<td>Unidad básica</td>
+<td>Seleccionar la unidad asistencial o de internación específica
+correspondiente.</td>
+</tr>
+<tr>
+<td>Vía aplicación</td>
+<td>Seleccionar la vía de administración del medicamento vinculada a la
+dosis terapéutica.</td>
+</tr>
+<tr>
+<td>Peso mínimo (kg)</td>
+<td>Informar el peso mínimo del paciente en kilogramos requerido para
+activar la regla.</td>
+</tr>
+<tr>
+<td>Peso máximo (kg)</td>
+<td>Informar el peso máximo del paciente en kilogramos permitido para
+aplicar la regla.</td>
+</tr>
+<tr>
+<td>Edad mínima (Año(s) / Mes(es) / Día(s))</td>
+<td>Informar el límite inferior de edad del paciente (en años, meses o
+días) para la aplicación de la regla.</td>
+</tr>
+<tr>
+<td>Edad máxima (Año(s) / Mes(es) / Día(s))</td>
+<td>Informar el límite superior de edad del paciente (en años, meses o
+días) para la aplicación de la regla.</td>
+</tr>
+<tr>
+<td>Edad gestacional corregida (IGC) (Mínima / Máxima)</td>
+<td>Informar el rango de edad gestacional corregida (mínima y máxima)
+para pacientes pediátricos o neonatales.</td>
+</tr>
+<tr>
+<td>CIE</td>
+<td>Buscar y asociar el código del diagnóstico (Clasificación
+Internacional de Enfermedades) específico si la regla aplica según la
+condición clínica.</td>
+</tr>
+<tr>
+<td>Intervalo</td>
+<td>Seleccionar la frecuencia o intervalo de administración al que
+condiciona esta dosis.</td>
+</tr>
+<tr>
+<td>Solamente si el ítem es necesario</td>
+<td>Marcar si esta regla de dosis aplica exclusivamente cuando la
+prescripción es a libre demanda o en caso de ser necesario (PRN).</td>
+</tr>
+<tr>
+<td>Intervalo prescripción</td>
+<td>Seleccionar el intervalo de administración que se predeterminará en
+la prescripción médica.</td>
+</tr>
+<tr>
+<td>Unidad medida prescripción</td>
+<td>Seleccionar la unidad de medida utilizada para sugerir la dosis
+predeterminada en la prescripción.</td>
+</tr>
+<tr>
+<td>Dosis prescripción</td>
+<td>Informar la cantidad o valor numérico de la dosis que se presentará
+por defecto al prescribir.</td>
+</tr>
+<tr>
+<td>Días previstos para utilización</td>
+<td>Informar el número total de días predeterminados para la duración
+del tratamiento.</td>
+</tr>
+<tr>
+<td>Dosis especial/ataque</td>
+<td>Informar la dosis inicial o de carga que debe sugerirse en la
+primera administración.</td>
+</tr>
+<tr>
+<td>Dosis terapéutica (Rango / Valor)</td>
+<td>Informar el valor o rango de dosis terapéutica de referencia para el
+cálculo.</td>
+</tr>
+<tr>
+<td>Unidad de medida (Dosis terapéutica)</td>
+<td>Seleccionar la unidad de medida asociada al cálculo del rango
+terapéutico.</td>
+</tr>
+<tr>
+<td>Dispositivo de infusión</td>
+<td>Seleccionar el tipo de dispositivo o bomba de infusión requerida
+para la administración.</td>
+</tr>
+<tr>
+<td>Regla dilución</td>
+<td>Seleccionar la regla de dilución predeterminada que se asociará al
+momento de prescribir.</td>
+</tr>
+<tr>
+<td>1º horario</td>
+<td>Informar la hora de inicio sugerida para la primera dosis del
+esquema de administración.</td>
+</tr>
+<tr>
+<td>Si es necesario</td>
+<td>Marcar si el esquema o dosis indicada es únicamente en caso de ser
+necesario.</td>
+</tr>
+<tr>
+<td>Exige justificación</td>
+<td>Marcar si el sistema debe solicitar una justificación clínica
+obligatoria al usuario.</td>
+</tr>
+<tr>
+<td>Horarios</td>
+<td>Especificar los horarios fijos predeterminados de administración
+dentro de la regla.</td>
+</tr>
+<tr>
+<td>Forma cálculo de la dosis</td>
+<td>Definir el método o fórmula matemática utilizada para calcular la
+dosis (ej. por peso, por superficie corporal).</td>
+</tr>
+<tr>
+<td>Observación/Recomendación</td>
+<td>Redactar instrucciones, aclaraciones o recomendaciones clínicas que
+se visualizarán durante la prescripción.</td>
+</tr>
+</tbody>
+</table>
+<p>Y las siguientes casillas:</p>
+<table data-custom-style="Tablaconcuadrcula4-nfasis5">
+<colgroup>
+<col style="width: 36%" />
+<col style="width: 63%" />
+</colgroup>
+<thead>
+<tr>
+<th>Casilla</th>
+<th>Descripción</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Mensaje prescripción</td>
+<td>Configurar el mensaje o alerta que se mostrará al médico en el
+momento de seleccionar el medicamento en la CPOE.</td>
+</tr>
+<tr>
+<td>Generar el ítem como STAT</td>
+<td>Marcar si el medicamento debe ser catalogado de orden
+inmediata/urgente (STAT) al prescribirse.</td>
+</tr>
+<tr>
+<td>Aplicar esta regla para soluciones</td>
+<td>Marcar para extender la regla de dosis predeterminada cuando el
+medicamento se prescriba formando parte de una solución.</td>
+</tr>
+<tr>
+<td>Hacer obligatoria justificación cuando dosis superar permitida</td>
+<td>Marcar para exigir que el médico ingrese un motivo válido si la
+dosis indicada rebasa los límites definidos en la regla.</td>
+</tr>
+<tr>
+<td>Limpiar 1er horario del medicamento</td>
+<td>Marcar para que el sistema borre automáticamente la hora del primer
+horario predeterminado según la lógica de dispensación</td>
+</tr>
+</tbody>
+</table>
+<h3 data-number="1.9.5" id="limites-terapéuticos"><span
+class="header-section-number">1.9.5</span> Limites Terapéuticos</h3>
+<p>En esta carpeta se puede crear una regla que diga: Si es un
+determinado sector de atención y una vía de aplicación, entonces puedo
+usar una determinada dosis, unidad por día, variando con un intervalo
+Mín./Max de horas y con un número máximo de días:</p>
+<p><img src="media/image15.png"
+style="width:9.70917in;height:7.684in" /></p>
+<p><img src="media/image16.png"
+style="width:9.89252in;height:6.5089in" /></p>
+<table data-custom-style="Tablaconcuadrcula4-nfasis5">
+<colgroup>
+<col style="width: 37%" />
+<col style="width: 62%" />
+</colgroup>
+<thead>
+<tr>
+<th>Campo</th>
+<th>Descripción</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Establecimiento</td>
+<td>Seleccionar el establecimiento o sede donde aplica la regla de
+límites terapéuticos.</td>
+</tr>
+<tr>
+<td>Agrupamiento sector</td>
+<td>Seleccionar el grupo de sectores o áreas de atención a las que
+aplica el límite terapéutico.</td>
+</tr>
+<tr>
+<td>Vía de aplicación</td>
+<td>Seleccionar la vía de administración del medicamento condicionada
+por el límite.</td>
+</tr>
+<tr>
+<td>Especialidad</td>
+<td>Seleccionar la especialidad médica sobre la cual aplicará la
+restricción del límite.</td>
+</tr>
+<tr>
+<td>Propósito de uso</td>
+<td>Seleccionar la finalidad o meta del tratamiento (ej. profiláctico,
+terapéutico) que activa la regla.</td>
+</tr>
+<tr>
+<td>Protocolo oncología</td>
+<td>Seleccionar el protocolo oncológico específico al que está asociado
+el límite terapéutico.</td>
+</tr>
+<tr>
+<td>Medicación</td>
+<td>Buscar y asociar el medicamento o esquema específico condicionado
+por este límite.</td>
+</tr>
+<tr>
+<td>Peso mínimo (kg)</td>
+<td>Informar el peso mínimo del paciente en kilogramos requerido para
+considerar la regla.</td>
+</tr>
+<tr>
+<td>Peso máximo (kg)</td>
+<td>Informar el peso máximo del paciente en kilogramos permitido para
+considerar la regla.</td>
+</tr>
+<tr>
+<td>Edad mínima (Año(s) / Mes(es) / Día(s))</td>
+<td>Informar el límite inferior de edad del paciente (en años, meses o
+días) para la aplicación de la regla.</td>
+</tr>
+<tr>
+<td>Edad máxima (Año(s) / Mes(es) / Día(s))</td>
+<td>Informar el límite superior de edad del paciente (en años, meses o
+días) para la aplicación de la regla.</td>
+</tr>
+<tr>
+<td>CIE</td>
+<td>Buscar y asociar el código del diagnóstico (Clasificación
+Internacional de Enfermedades) que restringe la dosificación.</td>
+</tr>
+<tr>
+<td>Dosis límite (máxima)</td>
+<td>Informar la cantidad máxima absoluta permitida para la
+administración del medicamento.</td>
+</tr>
+<tr>
+<td>Unidad (Dosis límite)</td>
+<td>Seleccionar la unidad de medida correspondiente a la dosis límite
+máxima.</td>
+</tr>
+<tr>
+<td>Por</td>
+<td>Seleccionar la base de cálculo o parámetro sobre el cual se evalúa
+la dosis máxima (ej. por peso, por dosis, por día).</td>
+</tr>
+<tr>
+<td>Dosis mínima</td>
+<td>Informar la cantidad mínima recomendada o permitida para la
+administración del medicamento.</td>
+</tr>
+<tr>
+<td>Unidad (Dosis mínima)</td>
+<td>Seleccionar la unidad de medida correspondiente a la dosis
+mínima.</td>
+</tr>
+<tr>
+<td>Horas intervalo</td>
+<td>Informar el intervalo mínimo de tiempo en horas que debe transcurrir
+entre dosis.</td>
+</tr>
+<tr>
+<td>Minutos aplicación</td>
+<td>Informar la duración mínima o recomendada en minutos para la
+infusión/aplicación del fármaco.</td>
+</tr>
+<tr>
+<td>Máximo de días</td>
+<td>Informar el número máximo de días consecutivos que se permite
+administrar el tratamiento.</td>
+</tr>
+<tr>
+<td>Máximo días previstos ATB</td>
+<td>Informar la cantidad máxima de días previstos para el tratamiento
+específico con antibióticos.</td>
+</tr>
+<tr>
+<td>Verificar dosis mismo que justificación informada (casilla)</td>
+<td>Marcar si el sistema debe verificar y validar la dosis aun si el
+usuario ingresó una justificación.</td>
+</tr>
+<tr>
+<td>Obedecer a la dosis límite caso exceda (casilla)</td>
+<td>Marcar para exigir que el sistema fuerce el tope de la dosis límite
+cuando la cantidad prescrita sea superior.</td>
+</tr>
+<tr>
+<td>Referencia</td>
+<td>Informar la cita bibliográfica, guía de práctica clínica o fuente
+que respalda el límite terapéutico.</td>
+</tr>
+<tr>
+<td>Verifica prescripción onc</td>
+<td>Seleccionar la regla de verificación específica para prescripciones
+del área de oncología.</td>
+</tr>
+<tr>
+<td>Observación</td>
+<td>Redactar aclaraciones o notas técnicas adicionales sobre el límite
+configurado.</td>
+</tr>
+<tr>
+<td>Mensaje regla</td>
+<td>Configurar el texto o mensaje de advertencia que se desplegará en la
+HCE/CPOE al sobrepasar los límites.</td>
+</tr>
+<tr>
+<td>Permite liberar la prescripción con justificación</td>
+<td>Marcar para permitir que el médico o profesional apruebe y continúe
+la prescripción si ingresa un motivo válido.</td>
+</tr>
+</tbody>
+</table>
+<h3 data-number="1.9.6" id="indicaciones-interacciones-reacciones"><span
+class="header-section-number">1.9.6</span> Indicaciones / Interacciones
+/ Reacciones</h3>
+<p>Permite que sean registradas las recomendaciones al usuario, las
+reacciones adversas, las interacciones medicamentosas, interacciones con
+alimentos, etc. La carpeta contiene varias subcarpetas donde se registra
+la información correspondiente como los riesgos, interacciones,
+reacciones, etc. Esta información será presentada durante la
+prescripción cuando aplique. Ver Sección de <a
+href="#_Alertas_asociadas_a"><span
+data-custom-style="Hyperlink"><mark>Alertas</mark></span></a>.</p>
+<p><img src="media/image17.png"
+style="width:13.30949in;height:1.84183in" /></p>
+<h3 data-number="1.9.7" id="conversión-de-unidad"><span
+class="header-section-number">1.9.7</span> Conversión de unidad</h3>
+<p>Esta carpeta es primordial para la prescripción pues permite informar
+las unidades de medida en que puede ser prescrito el ítem y su
+equivalencia (en el caso de multidosis, se debe hacer la conversión con
+la cantidad total del empaque, por ejemplo, 1 caja = 20 tabletas.</p>
+<p><img src="media/image18.png"
+style="width:9.85085in;height:1.89183in" /></p>
+<h3 data-number="1.9.8" id="almacenamiento"><span
+class="header-section-number">1.9.8</span> Almacenamiento</h3>
+<p>Esta permite agregar las indicaciones y condiciones de
+almacenamiento, esta información se refleja para enfermería y para las
+etiquetas de preparación dependiendo de la reglas establecidas:</p>
+<table data-custom-style="Tablaconcuadrcula4-nfasis5">
+<colgroup>
+<col style="width: 36%" />
+<col style="width: 63%" />
+</colgroup>
+<thead>
+<tr>
+<th>Campo</th>
+<th>Descripción</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Forma almacenamiento</td>
+<td>Seleccionar las condiciones de temperatura y conservación requeridas
+para el medicamento (ej. Refrigeración, Temperatura ambiente).</td>
+</tr>
+<tr>
+<td>Etapa almacenamiento</td>
+<td>Seleccionar la fase del proceso farmacoterapéutico en la que aplica
+la condición de almacenamiento (ej. Embalaje Original, Después de
+dilución).</td>
+</tr>
+<tr>
+<td>Estabilidad</td>
+<td>Informar el valor numérico del tiempo durante el cual el medicamento
+mantiene sus propiedades organolépticas y fisicoquímicas en las
+condiciones indicadas.</td>
+</tr>
+<tr>
+<td>Tiempo estabilidad</td>
+<td>Seleccionar la unidad de medida del tiempo de estabilidad (ej. Días,
+Horas, Meses).</td>
+</tr>
+<tr>
+<td>Reconstitución</td>
+<td>Seleccionar la regla o vehículo de reconstitución específico al que
+se vincula esta condición de almacenamiento.</td>
+</tr>
+<tr>
+<td>Dilución</td>
+<td>Seleccionar la regla de dilución específica asociada a estas
+condiciones de conservación.</td>
+</tr>
+<tr>
+<td>Referencia</td>
+<td>Redactar o indicar la fuente bibliográfica, ficha técnica o
+literatura oficial que avala la estabilidad configurada.</td>
+</tr>
+<tr>
+<td>Vía administración</td>
+<td>Seleccionar la vía de administración específica a la que aplica este
+criterio de almacenamiento.</td>
+</tr>
+<tr>
+<td>Marca</td>
+<td>Seleccionar la marca o firma comercial del producto si la regla de
+estabilidad es exclusiva de un laboratorio fabricante.</td>
+</tr>
+<tr>
+<td>Establecimiento</td>
+<td>Seleccionar el establecimiento o sede donde aplica la regla de
+almacenamiento.</td>
+</tr>
+<tr>
+<td>Prioridad</td>
+<td>Informar el orden de jerarquía o preferencia de esta regla de
+almacenamiento cuando coinciden múltiples criterios (ej. 999).</td>
+</tr>
+<tr>
+<td>Protegido de la luz</td>
+<td>Marcar si el medicamento requiere resguardo de la luz artificial o
+natural (fotosensible) durante esta etapa de almacenamiento.</td>
+</tr>
+<tr>
+<td>Estabilidad conforme estipulado por el fabricante/proveedor</td>
+<td>Marcar para indicar que los límites de estabilidad se apegan
+estrictamente a lo indicado en el inserto o marbete del fabricante.</td>
+</tr>
+</tbody>
+</table>
+<h3 data-number="1.9.9" id="vía-administración"><span
+class="header-section-number">1.9.9</span> Vía Administración</h3>
+<p>Carpeta para relacionar las posibles vías de administración para el
+ítem.</p>
+<p><img src="media/image19.png"
+style="width:13.29282in;height:3.5003in" /></p>
+<table data-custom-style="Tablaconcuadrcula4-nfasis5">
+<colgroup>
+<col style="width: 21%" />
+<col style="width: 78%" />
+</colgroup>
+<thead>
+<tr>
+<th>Campo</th>
+<th>Descripción</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Vía administración</td>
+<td>Seleccionar la vía de administración autorizada o sugerida para la
+aplicación del medicamento (ej. Oral).</td>
+</tr>
+<tr>
+<td>Prioridad</td>
+<td>Informar el orden de prioridad o preferencia de la vía de
+administración cuando existen múltiples vías configuradas.</td>
+</tr>
+<tr>
+<td>Recomendación</td>
+<td>Redactar observaciones, precauciones o instrucciones específicas
+para la administración del medicamento por esta vía.</td>
+</tr>
+<tr>
+<td>Regla dilución</td>
+<td>Seleccionar la regla de dilución predeterminada que aplica al
+administrar el medicamento por esta vía específica.</td>
+</tr>
+<tr>
+<td>Establecimiento</td>
+<td>Seleccionar el establecimiento o sede donde estará disponible esta
+vía de administración para el medicamento.</td>
+</tr>
+<tr>
+<td>Sector prescripción</td>
+<td>Seleccionar el sector o unidad asistencial donde aplica esta
+configuración de vía de administración.</td>
+</tr>
+<tr>
+<td>Sector excluir</td>
+<td>Seleccionar el sector o unidad asistencial que queda excluida de
+utilizar esta vía de administración.</td>
+</tr>
+</tbody>
+</table>
+<p>El registro cuenta con un campo de prioridad entre menor sea el
+digito es mayor la prioridad y será el orden presentado en las opciones
+de selección de vías; también es posible marcar si la vía registrada no
+está recomendada por el fabricante.</p>
+<div data-custom-style="Importante">
+<blockquote>
+<p>Si no es utilizada esta carpeta, todas las vías estarán disponibles
+para el médico en la prescripción:</p>
+</blockquote>
+</div>
+<h3 data-number="1.9.10" id="sectores"><span
+class="header-section-number">1.9.10</span> Sectores</h3>
+<p>Carpeta donde se puede registrar un sector exclusivo para un
+determinado ítem y también puede marcar si el mismo ítem puede ser
+prescrito. Es útil para limitar medicamentos de uso exclusivo en las
+unidades críticas.</p>
+<p><img src="media/image20.png"
+style="width:13.25948in;height:1.80849in" /></p>
+<table data-custom-style="Tablaconcuadrcula4-nfasis5">
+<colgroup>
+<col style="width: 21%" />
+<col style="width: 78%" />
+</colgroup>
+<thead>
+<tr>
+<th>Campo</th>
+<th>Descripción</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Agrupamiento sector</td>
+<td>Seleccionar el grupo de sectores o áreas asistenciales donde estará
+restringido o disponible el material/medicamento.</td>
+</tr>
+<tr>
+<td>Sector</td>
+<td>Seleccionar el sector o unidad de atención específica (ej.
+Hospitalización) para definir su exclusividad.</td>
+</tr>
+<tr>
+<td>Permite prescribir</td>
+<td>Marcar para habilitar la prescripción del material/medicamento de
+manera exclusiva en el sector seleccionado.</td>
+</tr>
+</tbody>
+</table>
+<h3 data-number="1.9.11" id="atc"><span
+class="header-section-number">1.9.11</span> ATC</h3>
+<p>Carpeta donde se puede consultar la anatómica terapéutica química de
+cada ítem.</p>
+<p><img src="media/image21.png"
+style="width:13.30949in;height:1.80016in" /></p>
+<h2 data-number="1.10" id="función-medicamento"><span
+class="header-section-number">1.10</span> Función Medicamento</h2>
+<p>Utilizaremos la función medicamento para el registro de los
+intervalos que pueden ser utilizados en el ítem registrado; para
+ingresar a la función damos click en el siguiente ícono. Este modulo
+permite acceder a ciertos campos del módulo de <a
+href="#registro-de-materiales"><span
+data-custom-style="Hyperlink">Registro de Materiales</span></a>
+específicos para esta clasificación.<img src="media/image22.jpeg"
+style="width:1.55556in;height:0.95347in" /></p>
+<h2 data-number="1.11" id="registro-del-medicamento"><span
+class="header-section-number">1.11</span> Registro del medicamento</h2>
+<p>Dentro de la función utilizamos el buscador de materiales para
+localizar el ítem a configurar. Una vez localizado el ítem, del lado
+derecho de la pantalla seleccionamos la carpeta “Intervalos del
+Medicamento”</p>
+<p><img src="media/image23.png"
+style="width:5.83384in;height:1.75015in" /></p>
+<p><img src="media/image24.png"
+style="width:6.89226in;height:4.25037in" /></p>
+<h3 data-number="1.11.1" id="intervalos-del-medicamento"><span
+class="header-section-number">1.11.1</span> Intervalos del
+medicamento</h3>
+<p>Dentro de esta carpeta, agregamos los intervalos que puede ser
+utilizado en el ítem, dando click en añadir, seleccionamos el intervalo
+y guardamos el registro.</p>
+<p><img src="media/image25.png"
+style="width:7.39231in;height:1.97517in" /></p>
+<div data-custom-style="Importante">
+<blockquote>
+<p>Si no se especifica al menos un intervalo, todos los liberados
+estarán disponibles para la prescripción.</p>
+</blockquote>
+</div>
+<h3 data-number="1.11.2" id="ficha-técnica"><span
+class="header-section-number">1.11.2</span> Ficha Técnica</h3>
+<p>Para poder realizar el registro de un nuevo principio activo, primero
+se debe realizar la búsqueda y después añadir:</p>
+<p><img src="media/image26.png"
+style="width:4.75875in;height:2.6419in" /></p>
+<p><img src="media/image27.png"
+style="width:10.48424in;height:8.97578in" /></p>
+<h3 data-number="1.11.3" id="registros"><span
+class="header-section-number">1.11.3</span> Registros</h3>
+<p>En caso de requerir crear un nuevo registro correspondiente al
+Anatomical Therapeutic Chemical Classification System (ATC), deberá usar
+el menú para seleccionar la opción “Registros”:</p>
+<p><img src="media/image28.png"
+style="width:16.52643in;height:4.55873in" /></p>
+<ol type="a">
+<li><div data-custom-style="List Paragraph">
+<p>Al dar doble click sobre cualquier de los grupos es posible
+visualizar los subgrupos farmacológicos o terapéuticos denominados
+“Clase terapéutica” (nivel 2). A continuación, se muestra un ejemplo de
+con el segundo nivel del grupo A. En caso de requerir añadir un nuevo
+registro de clase es necesario usar la opción “Añadir” de la esquina
+superior derecha.</p>
+</div></li>
+<li><div data-custom-style="List Paragraph">
+<p>Por otro lado, si el usuario requiere añadir un nuevo registro para
+el nivel 3(Subclase terapéutica) deberá seleccionar el nivel 2 en el
+menú izquierdo y dar doble clic para mostrar las subclases existentes.
+Posteriormente puede usar la opción “Añadir” para crear un nuevo
+código.</p>
+</div></li>
+<li><div data-custom-style="List Paragraph">
+<p>Para añadir un registro del nivel 4 (Grupo químico) es necesario
+seleccionar el registro de nivel 3 para mostrar los registros
+existentes. El usuario puede usar puede usar la opción “Añadir” para
+crear un nuevo código.</p>
+</div></li>
+<li><div data-custom-style="List Paragraph">
+<p>Finalmente, el registro de los principios activos (correspondiente al
+nivel 5) debe realizarse seleccionando el nivel 4 correspondiente y
+añadiendo un nuevo registro en la pantalla de lado derecho usando el
+botón “Añadir”.</p>
+</div></li>
+</ol>
+<h1 data-number="2" id="alertas"><span
+class="header-section-number">2</span> Alertas</h1>
+<p>Al automatizar la validación mediante reglas se crea la posibilidad
+de generar alertas visuales, alertas desplegables y alertas limitantes o
+que pidan justificación, una mala configuración inadecuada puede generar
+una fatiga visual, o detener el flujo. Las que están configuradas
+actualmente son:</p>
+<h2 data-number="2.1" id="alertas-asistenciales-y-de-prescripción"><span
+class="header-section-number">2.1</span> Alertas Asistenciales y de
+Prescripción</h2>
+<p>Se activan al momento en que el médico selecciona o modifica un
+medicamento en la prescripción. Evalúan los parámetros parametrizados en
+el catálogo de materiales y medicamentos:</p>
+<h2 data-number="2.2"
+id="alertas-de-validación-farmacéutica-y-dispensación"><span
+class="header-section-number">2.2</span> Alertas de Validación
+Farmacéutica y Dispensación</h2>
+<h2 data-number="2.3"
+id="alertas-de-stock-y-logística-de-materiales"><span
+class="header-section-number">2.3</span> Alertas de Stock y Logística de
+Materiales</h2>
+<h1 data-number="3" id="reglas-de-configuración"><span
+class="header-section-number">3</span> Reglas de configuración</h1>
+<p>Los requisitos mínimos y las mejores prácticas se plasman a
+continuación, dependiente de la naturaleza del medicamento puede ser
+necesario configuraciones adicionales. Sin embargo para la gran mayoría
+de estas configuraciones específicas son estandarizadas:</p>
+<h2 data-number="3.1"
+id="configuración-del-registro-de-materiales"><span
+class="header-section-number">3.1</span> Configuración del Registro de
+materiales</h2>
+<table data-custom-style="Tablaconcuadrcula4-nfasis5">
+<colgroup>
+<col style="width: 22%" />
+<col style="width: 77%" />
+</colgroup>
+<thead>
+<tr>
+<th>Item</th>
+<th>Opción por default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Material stock:</td>
+<td>Siempre debe estar referenciado al mismo código, ya que controla los
+movimientos del stock.</td>
+</tr>
+<tr>
+<td>Cobrar al paciente</td>
+<td>Solo se desmarca en caso de que no sea necesario generar un
+movimiento de cargo por este material</td>
+</tr>
+<tr>
+<td>Situación activa</td>
+<td>Permite generar movimientos de stock y prescripción</td>
+</tr>
+<tr>
+<td>Disponible en el marcado</td>
+<td>Solo se debe cambiar ante desabastos. No limita la prescripción,
+pero genera alertas.</td>
+</tr>
+<tr>
+<td>Familia</td>
+<td>Es la mejor práctica llenarlo cuando exista una coincidencia ya que
+permite controlar otras reglas, como las alergias</td>
+</tr>
+</tbody>
+</table>
+<h2 data-number="3.2" id="dosis-unitarias-enterales"><span
+class="header-section-number">3.2</span> Dosis unitarias enterales</h2>
+<p>Son las presentaciones en dosis definidas y suficientes para una
+administración, incluye tabletas, cápsulas ampolletas orales</p>
+<p>Al iniciar se deben configurar la conversión de unidades equivalentes
+a la unidad de prescripción en la sección de <a
+href="#conversión-de-unidad"><span
+data-custom-style="Hyperlink"><mark>Conversión de
+unidades</mark></span></a>:</p>
+<p><img src="media/image29.png"
+style="width:15.64302in;height:2.75024in" /></p>
+<div data-custom-style="Politica">
+<blockquote>
+<p>La unidad de prescripción siempre debe ser una unidad científica y
+aprobada. Los medicamentos pueden tener más de una unidad seleccionada
+(ej. miligramo y gramo). En caso de que contengan mas de un activo y no
+se pueda expresar como la suma de sus componentes. Se puede expresar en
+la unidad de solicitud (tableta).</p>
+</blockquote>
+</div>
+<p>Para limitar las vías de administración se deben agregarse en la
+pestana correspondiente y si es necesario que aparezca la recomendación
+se debe agregar en este campo:</p>
+<p><img src="media/image30.png"
+style="width:20.98515in;height:3.5003in" /></p>
+<p>En “unidad de medida” (pestaña <a href="#medicamento"><span
+data-custom-style="Hyperlink">medicamento</span></a>) se debe
+especificar si esta vía será la que aparezca al realizar una
+prescripción en CPOE de modo que no tenga que seleccionarse manualmente,
+esto es similar para el caso de “vía de administración” e Intervalo
+estándar de prescripción en la pestaña “prescripción”.</p>
+<p><img src="media/image31.png"
+style="width:16.08473in;height:2.87525in" /></p>
+<p>De acuerdo al tipo de material se pueden agregar alertas visuales de
+la prescripción, se deben considerar siempre al menos dos casillas
+“Generar lote para Dispensación de Prescripciones” y “prescripción” para
+que se genere el lote correspondiente al prescribir y “prescripción”
+pero para que se puedan visualizar en CPOE.</p>
+<p><img src="media/image32.png"
+style="width:3.55864in;height:2.00017in" /></p>
+<h2 data-number="3.3"
+id="medicamentos-con-más-de-un-principio-activo"><span
+class="header-section-number">3.3</span> Medicamentos con más de un
+principio activo</h2>
+<h2 data-number="3.4" id="multidosis-sin-dosis-estándar"><span
+class="header-section-number">3.4</span> <br />
+Multidosis sin dosis estándar</h2>
+<p>Son aquellos que no son parenterales y que la dosis es variable para
+cada paciente, por ejemplo, los ungüentos, enjuagues o gotas. Para estas
+presentaciones se dispensa por presentación completa y no se
+fracciona.</p>
+<p>Los campos mínimos para un correcto flujo son:</p>
+<ol type="a">
+<li><p>Definir una vía de administración (las más utilizada debe ser la
+predeterminada, solo solo hay una, debe aparecer
+automáticamente)</p></li>
+<li><p>Si se coloca una dosis sugerida esta debe ser la estándar de
+administración</p></li>
+</ol>
+<div data-custom-style="Importante">
+<blockquote>
+<p>Si no se coloca la dosis sugerida tomara el total que incluye la
+presentación</p>
+</blockquote>
+</div>
+<ol start="3" type="a">
+<li><p>La unidad de medida para realizar la prescripción, por ejemplo:
+Aplicación, gota, lavado, lenguaje, etc.). Llenar la Tabla de registro
+de materiales Farmacia/ conversión de unidades esta debe ser un
+aproximado y se debe mantener para todas las presentaciones del mismo
+activo y forma farmacéutica (ej. ¡ tubo equivale a 5 aplicaciones) para
+fines de la prescripción en CPOE no tiene relevancia, ver reglas de
+prescripción.</p></li>
+<li><p>Los campos mínimos que deben estar configurados son:</p>
+<ol type="i">
+<li><div data-custom-style="List Paragraph">
+<p>Registro Materiales/ Farmacia /Prescripción:</p>
+</div>
+<ul>
+<li><div data-custom-style="List Paragraph">
+<p>Generar lote de Dispensación de Prescripciones</p>
+</div></li>
+<li><div data-custom-style="List Paragraph">
+<p>Prescripción</p>
+</div></li>
+<li><div data-custom-style="List Paragraph">
+<p>Permite dosis Fraccionadas en la REP</p>
+</div></li>
+</ul></li>
+</ol></li>
+</ol>
+<blockquote>
+
+</blockquote>
+<ol start="5" type="a">
+<li><p>En la conversión de unidades se debe incluir únicamente la unidad
+total y la unidad de aplicación, esto para evitar que el médico pueda
+realizar una prescripción confusa.</p></li>
+<li><p>Se deben liberar todas las vías necesarias:</p></li>
+</ol>
+<p>Medicamento/Registro del medicamento/Intervalos del medicamento</p>
+<div data-custom-style="Quote">
+<blockquote>
+<p>Nota: En las observaciones de vía (ver alertas) se recomienda como
+buena práctica incluir un texto que obligue al prescriptor a dar más
+detalles, por ejemplo: “aplicar en … “, oído ___, etc</p>
+</blockquote>
+</div>
+<h2 data-number="3.5"
+id="medicamentos-multidosis-con-dosis-estándar"><span
+class="header-section-number">3.5</span> Medicamentos multidosis con
+dosis estándar</h2>
+<p>Incluye a los medicamentos que se prescriben en fracciones fijas, y
+que cada presentación comercial dispensada por farmacia tiene múltiples
+dosis para un mismo paciente, por ejemplo, jarabes pediátricos,
+suspensiones o soluciones inhaladas.</p>
+<p>Política: Los medicamentos siempre deben prescribirse en unidades
+permitidas como son: g, mg, unidades internacionales, no se debe usar
+mL, tableta u otra unidad adicional, a menos que se trate de un
+medicamento con más de 2 activos y no se manejan la dosificación como la
+suma de ambos.</p>
+<p>Estos medicamentos deberemos especificarlos al igual que los <a
+href="#multidosis-sin-dosis-estándar"><span
+data-custom-style="Hyperlink">Medicamentos sin dosis estándar</span></a>
+y además se debe especificar que son multidosis (Registro de
+material/Farmacia/Medicamento):</p>
+<div data-custom-style="Nota">
+<p>Nota: como recomendación en las observaciones asociadas a la vía se
+pueden especificar conversiones adicionales si se administra el
+medicamento en una unidad diferente a la prescrita</p>
+</div>
+<h2 data-number="3.6" id="medicamentos-intravenosos"><span
+class="header-section-number">3.6</span> Medicamentos intravenosos</h2>
+<p>Para los medicamentos intravenosos se deben realizar las
+configuraciones correspondientes previas además de considerar añadir el
+diluyente para las vías que aplique.</p>
+<h2 data-number="3.7" id="medicamentos-para-infusión-en-bolo"><span
+class="header-section-number">3.7</span> Medicamentos para infusión en
+bolo</h2>
+<p>Infusiones continúas de infusión constante</p>
+<p>Infusiones dinámicas</p>
+<h2 data-number="3.8" id="nutriciones"><span
+class="header-section-number">3.8</span> Nutriciones</h2>
+<p>Las nutriciones enterales se visualizan en el módulo de Registros de
+Nutrición, aquellos materiales que caigan en esta categoría podrán
+editarse desde este módulo, lo cual afecta ciertos campos del <a
+href="#nutriciones"><span data-custom-style="Hyperlink">Registro de
+Materiales</span></a>.</p>
+<p><img src="media/image33.png"
+style="width:2.55022in;height:0.88341in" /></p>
+<h2 data-number="3.9" id="registros-de-nutrición"><span
+class="header-section-number">3.9</span> Registros de Nutrición</h2>
+<p><img src="media/image34.png"
+style="width:10.65092in;height:3.44197in" /></p>
+<h3 data-number="3.9.1" id="elementos-nutricióncpoe"><span
+class="header-section-number">3.9.1</span> Elementos nutrición/CPOE</h3>
+<p><img src="media/image35.png"
+style="width:10.55925in;height:7.16729in" /></p>
+<table data-custom-style="Tablaconcuadrcula4-nfasis5">
+<colgroup>
+<col style="width: 36%" />
+<col style="width: 63%" />
+</colgroup>
+<thead>
+<tr>
+<th>Campo</th>
+<th>Descripción</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Elemento</td>
+<td>Informar la denominación o nombre del elemento nutrimental a
+registrar.</td>
+</tr>
+<tr>
+<td>Tipo elemento</td>
+<td>Seleccionar la clasificación o categoría del componente (ej.
+Vitamina).</td>
+</tr>
+<tr>
+<td>Unidad de medida</td>
+<td>Seleccionar la unidad de medida estándar del elemento en la
+formulación.</td>
+</tr>
+<tr>
+<td>Unidad de medida del cálculo pediátrico</td>
+<td>Seleccionar la unidad de medida específica para los cálculos de
+dosificación en pediatría.</td>
+</tr>
+<tr>
+<td>Descripción de la necesidad pediátrica</td>
+<td>Redactar las especificaciones u observaciones sobre requerimientos
+nutricionales en pacientes pediátricos.</td>
+</tr>
+<tr>
+<td>Descripción de la necesidad/kg/día</td>
+<td>Redactar la descripción o cálculo del requerimiento nutricional
+diario por kilogramo de peso del paciente.</td>
+</tr>
+<tr>
+<td>Valor mínimo</td>
+<td>Informar la cantidad o dosis mínima permitida del elemento (ej.
+0).</td>
+</tr>
+<tr>
+<td>Valor máximo</td>
+<td>Informar la cantidad o dosis máxima permitida del elemento (ej.
+0).</td>
+</tr>
+<tr>
+<td>Secuencia presentación</td>
+<td>Informar el orden numérico de despliegue del elemento en la pantalla
+de la CPOE (ej. 100).</td>
+</tr>
+<tr>
+<td>Valor estándar</td>
+<td>Informar la cantidad o concentración predeterminada del elemento al
+cargarlo en la prescripción.</td>
+</tr>
+<tr>
+<td>Secuencia impresión</td>
+<td>Informar el orden numérico en el que aparecerá impreso el elemento
+en las etiquetas o reportes (ej. 100).</td>
+</tr>
+<tr>
+<td>Participa de la Diálisis</td>
+<td>Seleccionar si el elemento forma parte de los componentes
+considerados para pacientes en tratamiento de diálisis (ej. No).</td>
+</tr>
+<tr>
+<td>Volumen recalcular</td>
+<td>Informar el volumen de referencia para realizar el ajuste o
+recalculación automática del elemento.</td>
+</tr>
+<tr>
+<td>Participa de la NPT Neonatal</td>
+<td>Marcar si el elemento está disponible para su formulación en
+Nutrición Parenteral Total Neonatal.</td>
+</tr>
+<tr>
+<td>Primera fase / Segunda fase / Tercera fase / Cuarta fase</td>
+<td>Marcar la fase o etapa específica de preparación/administración en
+la que debe incluirse el elemento.</td>
+</tr>
+<tr>
+<td>Participa de la NPT Adulto</td>
+<td>Marcar si el elemento está disponible para su formulación en
+Nutrición Parenteral Total para Adultos.</td>
+</tr>
+<tr>
+<td>Participa de la TREV</td>
+<td>Marcar si el elemento forma parte de los componentes para Terapia de
+Reposición o Terapia Enteral/Endovenosa específica.</td>
+</tr>
+<tr>
+<td>Participa de la NPT Pediátrica</td>
+<td>Marcar si el elemento está disponible para su formulación en
+Nutrición Parenteral Total Pediátrica.</td>
+</tr>
+<tr>
+<td>Participa de la dieta enteral</td>
+<td>Marcar si el elemento puede integrarse en formulaciones de nutrición
+enteral.</td>
+</tr>
+<tr>
+<td>Cantidad límite</td>
+<td>Informar el valor límite cuantitativo del elemento dentro de la
+mezcla.</td>
+</tr>
+<tr>
+<td>Respetar límite máximo por litro</td>
+<td>Marcar para exigir que el sistema no permita exceder la
+concentración máxima configurada por litro de solución.</td>
+</tr>
+<tr>
+<td>Sumar en el volumen total</td>
+<td>Marcar para contabilizar el volumen de este elemento dentro del
+volumen global de la mezcla/solución.</td>
+</tr>
+<tr>
+<td>Participa de la solución/medicamento</td>
+<td>Marcar si el elemento puede prescribirse o mezclarse de forma
+integrada con soluciones base o medicamentos.</td>
+</tr>
+<tr>
+<td>Glutamina</td>
+<td>Marcar si el elemento corresponde a glutamina para aplicar reglas
+específicas de aminoácidos.</td>
+</tr>
+<tr>
+<td>Redistribución proporcional conforme volumen</td>
+<td>Marcar para autorizar al sistema a reajustar la proporción del
+elemento automáticamente al modificar el volumen total de la
+mezcla.</td>
+</tr>
+<tr>
+<td>Situación activa</td>
+<td>Marcar para mantener activo el registro del elemento nutricional en
+el sistema.</td>
+</tr>
+</tbody>
+</table>
+<h3 data-number="3.9.2"
+id="nutrición-productos-por-tipo-de-nutrición"><span
+class="header-section-number">3.9.2</span> Nutrición (Productos por tipo
+de nutrición)</h3>
+<p><img src="media/image36.png"
+style="width:7.709in;height:9.80085in" /></p>
+<table data-custom-style="Tablaconcuadrcula4-nfasis5">
+<colgroup>
+<col style="width: 34%" />
+<col style="width: 65%" />
+</colgroup>
+<thead>
+<tr>
+<th>Campo</th>
+<th>Descripción</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Producto</td>
+<td>Informar o buscar la denominación del producto nutricional.</td>
+</tr>
+<tr>
+<td>Material</td>
+<td>Buscar y seleccionar el código y la descripción del material/insumo
+del catálogo asociado a la formulación nutricional.</td>
+</tr>
+<tr>
+<td>Cantidad</td>
+<td>Informar la cantidad predeterminada del producto nutricional.</td>
+</tr>
+<tr>
+<td>Color</td>
+<td>Seleccionar la paleta o identificador de color para la
+representación visual del producto en la pantalla o impresiones.</td>
+</tr>
+<tr>
+<td>Secuencia presentación</td>
+<td>Informar el orden o secuencia numérica en la que se despliega el
+ítem dentro del catálogo (ej. 999).</td>
+</tr>
+<tr>
+<td>Unidad de medida</td>
+<td>Seleccionar la unidad de medida correspondiente a la cantidad
+informada.</td>
+</tr>
+<tr>
+<td>Vía aplicación</td>
+<td>Seleccionar la vía de administración autorizada para la nutrición
+(ej. Entérica, Parenteral, Oral).</td>
+</tr>
+<tr>
+<td>Intervalo</td>
+<td>Seleccionar la frecuencia o intervalo estándar de administración del
+producto nutricional.</td>
+</tr>
+<tr>
+<td>Kcal por ml</td>
+<td>Informar la densidad calórica expresada en kilocalorías por
+mililitro del producto.</td>
+</tr>
+<tr>
+<td>Horarios</td>
+<td>Configurar los horarios fijos predeterminados de
+administración.</td>
+</tr>
+<tr>
+<td>Dispositivo infusión</td>
+<td>Seleccionar el tipo de dispositivo o bomba de infusión requerida
+para su administración.</td>
+</tr>
+<tr>
+<td>Tipo nutrición</td>
+<td>Seleccionar la categoría o modalidad de nutrición a la que pertenece
+el producto.</td>
+</tr>
+<tr>
+<td>Clasificación</td>
+<td>Seleccionar el grupo o tipo de fórmula nutricional.</td>
+</tr>
+<tr>
+<td>Clasificación servicio</td>
+<td>Seleccionar la categoría del servicio asistencial al que se asocia
+la formulación.</td>
+</tr>
+<tr>
+<td>Orientaciones del prescriptor</td>
+<td>Redactar indicaciones o instrucciones específicas dirigidas al
+personal que administra la nutrición.</td>
+</tr>
+<tr>
+<td>Información dieta (Opciones de selección)</td>
+<td><p>Configurar el comportamiento de la pantalla de prescripción
+seleccionando una de las siguientes opciones:</p>
+<p>- Solicitar velocidad y tiempo: Habilita la captura de velocidad de
+infusión y tiempo total.</p>
+<p>- No solicitar: Desactiva la solicitud de dichos parámetros.</p>
+<p>- Solicitar todos los datos en pantalla única: Despliega todos los
+campos de configuración en una sola ventana.</p></td>
+</tr>
+<tr>
+<td>Preguntar intervalo</td>
+<td>Marcar para exigir que el médico especifique el intervalo al momento
+de realizar la prescripción.</td>
+</tr>
+<tr>
+<td>A criterio del médico</td>
+<td>Marcar si la administración queda sujeta a la valoración del
+profesional de la salud.</td>
+</tr>
+<tr>
+<td>Cálculo automático</td>
+<td>Marcar para habilitar el cálculo automatizado de volumen o calorías
+en el sistema.</td>
+</tr>
+<tr>
+<td>Confirmar dosis</td>
+<td>Marcar para exigir una confirmación manual de la dosis al prescribir
+el ítem.</td>
+</tr>
+<tr>
+<td>Obliga el tiempo de infusión</td>
+<td>Marcar para requerir obligatoriamente el ingreso del tiempo total de
+infusión al prescribir.</td>
+</tr>
+<tr>
+<td>Obliga la velocidad de infusión</td>
+<td>Marcar para requerir obligatoriamente el ingreso de la velocidad de
+infusión al prescribir.</td>
+</tr>
+<tr>
+<td>Generar kit prescripción</td>
+<td>Marcar si el ítem debe desencadenar la creación de un paquete o kit
+preconfigurado en la prescripción.</td>
+</tr>
+<tr>
+<td>Genere la indicación del prescriptor como observación del ítem</td>
+<td>Marcar para que las orientaciones capturadas por el médico se
+transfieran automáticamente como observaciones al renglón de la
+prescripción.</td>
+</tr>
+<tr>
+<td>Preguntar sabor</td>
+<td>Marcar para solicitar la elección del sabor del producto nutricional
+durante el registro de la orden médica.</td>
+</tr>
+<tr>
+<td>Situación activa</td>
+<td>Marcar para mantener activo el registro del producto nutricional en
+el catálogo.</td>
+</tr>
+</tbody>
+</table>
+<h3 data-number="3.9.3" id="leche-y-derivados"><span
+class="header-section-number">3.9.3</span> Leche y derivados</h3>
+<p><img src="media/image37.png"
+style="width:5.25045in;height:5.20878in" /></p>
+<table data-custom-style="Tablaconcuadrcula4-nfasis5">
+<colgroup>
+<col style="width: 24%" />
+<col style="width: 75%" />
+</colgroup>
+<thead>
+<tr>
+<th>Campo</th>
+<th>Descripción</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Descripción interna</td>
+<td>Redactar o informar la denominación técnica interna utilizada para
+identificar la leche o fórmula infantil en el sistema.</td>
+</tr>
+<tr>
+<td>Producto</td>
+<td>Buscar y seleccionar el código y la descripción del producto o
+fórmula infantil a registrar.</td>
+</tr>
+<tr>
+<td>Unidad de medida</td>
+<td>Seleccionar la unidad de medida estándar utilizada para la
+dosificación o dispensación del producto.</td>
+</tr>
+<tr>
+<td>Clasificación</td>
+<td>Seleccionar la categoría o grupo nutricional al que pertenece la
+fórmula infantil.</td>
+</tr>
+<tr>
+<td>Clasificación servicio</td>
+<td>Seleccionar la clasificación correspondiente al servicio asistencial
+o de dietética que gestiona el producto.</td>
+</tr>
+<tr>
+<td>Secuencia presentación</td>
+<td>Informar el orden numérico de prioridad en el que se visualizará
+este producto en la lista o catálogo.</td>
+</tr>
+<tr>
+<td>Muestra</td>
+<td>Informar el tipo o identificador de muestra utilizado para pruebas o
+presentación del producto.</td>
+</tr>
+<tr>
+<td>Establecimiento</td>
+<td>Seleccionar la sede o establecimiento donde aplica el registro de la
+fórmula infantil (ej. Centro Médico ABC Campus Observatorio).</td>
+</tr>
+<tr>
+<td>Cuestionar datos producto</td>
+<td>Marcar para exigir la verificación o confirmación de los datos del
+producto durante la prescripción médica.</td>
+</tr>
+<tr>
+<td>Por razón necesaria</td>
+<td>Marcar si el producto puede ser indicado o administrado a libre
+demanda / según la necesidad del paciente (PRN).</td>
+</tr>
+<tr>
+<td>Situación activa</td>
+<td>Marcar para mantener activo el registro de la leche o fórmula
+infantil dentro del sistema.</td>
+</tr>
+</tbody>
+</table>
+<h2 data-number="3.10" id="nutriciones-enterales"><span
+class="header-section-number">3.10</span> <br />
+Nutriciones Enterales</h2>
+<h2 data-number="3.11" id="nutriciones-parenterales"><span
+class="header-section-number">3.11</span> Nutriciones Parenterales</h2>
+
+<h2 data-number="3.12" id="esquemas-de-insulinas"><span
+class="header-section-number">3.12</span> Esquemas de Insulinas</h2>
+<p>Esquemas en bolo</p>
+<p>Esquema en infusión contínua</p>
+<!-- Visor Lightbox para ampliación de imágenes -->
+<div id="image-lightbox" class="lightbox-overlay" onclick="this.classList.remove('active')">
+    <img id="lightbox-img" src="" alt="Vista ampliada" />
+</div>
+<script>
+    document.querySelectorAll("body img:not(#lightbox-img)").forEach(function(img) {
+        img.addEventListener("click", function() {
+            var lb = document.getElementById("image-lightbox");
+            var lbImg = document.getElementById("lightbox-img");
+            if (lb && lbImg) {
+                lbImg.src = this.src;
+                lb.classList.add("active");
+            }
+        });
+    });
+    document.addEventListener("keydown", function(e) {
+        if (e.key === "Escape") {
+            var lb = document.getElementById("image-lightbox");
+            if (lb) lb.classList.remove("active");
+        }
+    });
+</script>
+</body>
+</html>
